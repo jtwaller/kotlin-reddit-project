@@ -2,26 +2,29 @@ package com.jtwaller.tbdforreddit
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import retrofit2.Retrofit
+import android.util.Log
+import com.jtwaller.tbdforreddit.network.RedditApiService
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
+
+    companion object {
+        const val TAG = "MainActivity"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        
+        GlobalScope.async (Dispatchers.IO) {
+            val redditService = RedditApiService.create()
 
-        val retrofit = Retrofit.Builder()
-                .baseUrl("https://www.reddit.com/")
-                .addCallAdapterFactory(CoroutineCallAdapterFactory())
-                .build()
+            Log.d(TAG, "Fetching json")
+            val request = redditService.getJson()
+            val response = request.await()
 
-        GlobalScope.launch (Dispatchers.Main) {
-
+            Log.d(TAG, ": json received... kind = " + response.body()?.kind ?: "null" )
         }
-
     }
+
 }

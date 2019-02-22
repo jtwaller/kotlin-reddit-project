@@ -1,21 +1,17 @@
 package com.jtwaller.tbdforreddit.network
 
-
-class RedditResponse(
-        val redditObject: RedditObject
-)
+import com.google.gson.annotations.SerializedName
 
 class RedditObject(
         val kind: String,
+        @SerializedName("data")
         val redditData: RedditListingData
 )
 
 class RedditListingData(
         val children: List<RedditObject>,
         val after: String,
-        val before: String
-)
-
-class RedditT3Data(
-
+        val before: String,
+        val title: String,
+        val url: String
 )
