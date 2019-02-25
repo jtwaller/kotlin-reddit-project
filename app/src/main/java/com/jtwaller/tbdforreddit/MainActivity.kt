@@ -1,8 +1,8 @@
 package com.jtwaller.tbdforreddit
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.jtwaller.tbdforreddit.network.RedditApiService
 import kotlinx.coroutines.*
 
