@@ -1,10 +1,11 @@
 package com.jtwaller.tbdforreddit
 
 import android.os.Bundle
-import android.util.Log
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.jtwaller.tbdforreddit.network.RedditApiService
-import kotlinx.coroutines.*
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import java.lang.StringBuilder
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,16 +16,21 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        
-        GlobalScope.async (Dispatchers.IO) {
-            val redditService = RedditApiService.create()
 
-            Log.d(TAG, "Fetching json")
-            val request = redditService.getJson()
-            val response = request.await()
+        val tv = findViewById<TextView>(R.id.textView1)
 
-            Log.d(TAG, ": json received... kind = " + response.body()?.kind ?: "null" )
-        }
+        tv.text = "Loading"
+
+        val mViewModel = ViewModelProviders.of(this).get(RedditResponseViewModel::class.java)
+        mViewModel.mRedditLinkLiveData.observe(this, Observer { list ->
+            val sb = StringBuilder()
+            for (l in list) {
+                sb.append("${l.data.title}\n")
+            }
+            tv.text = sb
+        })
+
+        mViewModel.getLinks()
     }
 
 }

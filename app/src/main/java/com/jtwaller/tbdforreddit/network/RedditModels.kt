@@ -5,13 +5,25 @@ import com.google.gson.annotations.SerializedName
 class RedditObject(
         val kind: String,
         @SerializedName("data")
-        val redditData: RedditListingData
+        val listingData: RedditListingData
 )
 
 class RedditListingData(
-        val children: List<RedditObject>,
+        val children: List<RedditLink>,
         val after: String,
         val before: String,
         val title: String,
+        val url: String
+)
+
+class RedditLink(
+        val kind: String,
+        val data: RedditLinkData
+)
+
+class RedditLinkData(
+        val subreddit: String,
+        val title: String,
+        val permalink: String,
         val url: String
 )
