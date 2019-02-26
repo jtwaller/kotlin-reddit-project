@@ -10,6 +10,10 @@ import kotlinx.coroutines.async
 
 class RedditResponseViewModel : ViewModel() {
 
+    init {
+        getLinks()
+    }
+
     val mRedditLinkList = ArrayList<RedditLink>()
     val mRedditLinkLiveData = MutableLiveData<ArrayList<RedditLink>>()
 

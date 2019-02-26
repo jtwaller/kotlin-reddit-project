@@ -29,8 +29,6 @@ class MainActivity : AppCompatActivity() {
             }
             tv.text = sb
         })
-
-        mViewModel.getLinks()
     }
 
 }
