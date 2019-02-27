@@ -15,7 +15,7 @@ class RedditResponseViewModel : ViewModel() {
     }
 
     val mRedditLinkList = ArrayList<RedditLink>()
-    val mRedditLinkLiveData = MutableLiveData<ArrayList<RedditLink>>()
+    val mRedditLinkListSize = MutableLiveData<Int>()
 
     fun getLinks() {
         GlobalScope.async (Dispatchers.IO) {
@@ -32,7 +32,7 @@ class RedditResponseViewModel : ViewModel() {
             }
 
             // cannot use setValue() from background thread!!
-            mRedditLinkLiveData.postValue(mRedditLinkList)
+            mRedditLinkListSize.postValue(mRedditLinkList.size)
         }
     }
 }

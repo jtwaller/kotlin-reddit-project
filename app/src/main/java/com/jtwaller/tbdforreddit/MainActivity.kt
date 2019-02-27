@@ -13,6 +13,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
 
+    private var currLinkListSize = 0
+
     companion object {
         const val TAG = "MainActivity"
     }
@@ -22,12 +24,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val mViewModel = ViewModelProviders.of(this).get(RedditResponseViewModel::class.java)
-        mViewModel.mRedditLinkLiveData.observe(this, Observer { list ->
-            viewAdapter.notifyDataSetChanged()
+        mViewModel.mRedditLinkListSize.observe(this, Observer { listSize ->
+            viewAdapter.notifyItemRangeInserted(currLinkListSize, listSize)
+            currLinkListSize = listSize
         })
 
         viewManager = LinearLayoutManager(this)
-        // TODO: Need to set the viewmodel as the data source for the adapter?
         viewAdapter = MyAdapter(mViewModel.mRedditLinkList)
 
         recyclerView = findViewById<RecyclerView>(R.id.recycler_view).apply {
