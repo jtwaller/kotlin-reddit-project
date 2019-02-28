@@ -17,15 +17,24 @@ class RedditResponseViewModel : ViewModel() {
     val mRedditLinkList = ArrayList<RedditLink>()
     val mRedditLinkListSize = MutableLiveData<Int>()
 
+    var after: String? = null
+    var isLoading = false
+
     fun getLinks() {
+        if (isLoading) return
+
+        isLoading = true
+
         GlobalScope.async (Dispatchers.IO) {
             val redditService = RedditApiService.create()
 
-            val request = redditService.getJson()
+            val request = redditService.getJson(after)
             val response = request.await()
 
             // TODO: Error handling
             val body = response.body() ?: return@async
+
+            after = body.listingData.after
 
             for(child in body.listingData.children) {
                 mRedditLinkList.add(child)
@@ -33,6 +42,8 @@ class RedditResponseViewModel : ViewModel() {
 
             // cannot use setValue() from background thread!!
             mRedditLinkListSize.postValue(mRedditLinkList.size)
+
+            isLoading = false
         }
     }
 }

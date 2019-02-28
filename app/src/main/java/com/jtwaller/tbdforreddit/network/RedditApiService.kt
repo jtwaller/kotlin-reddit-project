@@ -9,11 +9,12 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface RedditApiService {
 
     @GET(".json")
-    fun getJson(): Deferred<Response<RedditObject>>
+    fun getJson(@Query("after") after: String?): Deferred<Response<RedditObject>>
 
     companion object Factory {
             fun create(): RedditApiService {
