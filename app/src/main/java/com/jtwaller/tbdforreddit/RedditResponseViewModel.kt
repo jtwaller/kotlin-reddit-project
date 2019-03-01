@@ -1,9 +1,10 @@
 package com.jtwaller.tbdforreddit
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jtwaller.tbdforreddit.network.RedditApiService
-import com.jtwaller.tbdforreddit.network.RedditLink
+import com.jtwaller.tbdforreddit.network.RedditT3
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -14,7 +15,7 @@ class RedditResponseViewModel : ViewModel() {
         getLinks()
     }
 
-    val mRedditLinkList = ArrayList<RedditLink>()
+    val mRedditLinkList = ArrayList<RedditT3>()
     val mRedditLinkListSize = MutableLiveData<Int>()
 
     var after: String? = null
@@ -38,6 +39,7 @@ class RedditResponseViewModel : ViewModel() {
 
             for(child in body.listingData.children) {
                 mRedditLinkList.add(child)
+                Log.d("tag", ": ${child.data.thumbnail}")
             }
 
             // cannot use setValue() from background thread!!

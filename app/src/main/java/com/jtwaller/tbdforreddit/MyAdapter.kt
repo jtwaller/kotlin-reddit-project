@@ -2,23 +2,24 @@ package com.jtwaller.tbdforreddit
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.jtwaller.tbdforreddit.network.RedditLink
+import com.jtwaller.tbdforreddit.network.RedditT3
+import kotlinx.android.synthetic.main.thumbnail_view.view.*
 
-class MyAdapter(private val mDataSet: ArrayList<RedditLink>): RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+class MyAdapter(private val mDataSet: ArrayList<RedditT3>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
-    class MyViewHolder(val textView: TextView) : RecyclerView.ViewHolder(textView)
+    class MyViewHolder(val thumbnailView: ConstraintLayout) : RecyclerView.ViewHolder(thumbnailView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val textView =  LayoutInflater.from(parent.context)
-                .inflate(R.layout.text_view, parent, false) as TextView
+        val thumbnailView =  LayoutInflater.from(parent.context)
+                .inflate(R.layout.thumbnail_view, parent, false) as ConstraintLayout
 
-        return MyViewHolder(textView)
+        return MyViewHolder(thumbnailView)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.textView.text = mDataSet[position].data.title
+        holder.thumbnailView.title_text.text = mDataSet[position].data.title
     }
 
     override fun getItemCount(): Int {

@@ -9,21 +9,20 @@ class RedditObject(
 )
 
 class RedditListingData(
-        val children: List<RedditLink>,
+        val children: List<RedditT3>,
         val after: String,
-        val before: String,
-        val title: String,
-        val url: String
+        val before: String
 )
 
-class RedditLink(
+class RedditT3(
         val kind: String,
-        val data: RedditLinkData
+        val data: RedditT3Data
 )
 
-class RedditLinkData(
+class RedditT3Data(
         val subreddit: String,
         val title: String,
         val permalink: String,
-        val url: String
+        val url: String,
+        val thumbnail: String
 )
