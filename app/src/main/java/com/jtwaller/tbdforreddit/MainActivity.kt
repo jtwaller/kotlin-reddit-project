@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         viewManager = LinearLayoutManager(this)
-        viewAdapter = MyAdapter(mViewModel.mRedditLinkList)
+        viewAdapter = MyAdapter(this, mViewModel.mRedditLinkList)
 
         recyclerView = findViewById<RecyclerView>(R.id.recycler_view).apply {
             setHasFixedSize(true)

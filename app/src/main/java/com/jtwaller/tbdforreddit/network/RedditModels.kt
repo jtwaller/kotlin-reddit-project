@@ -21,6 +21,7 @@ class RedditT3(
 
 class RedditT3Data(
         val subreddit: String,
+        val author: String,
         val title: String,
         val permalink: String,
         val url: String,
