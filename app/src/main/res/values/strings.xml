@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">TBD for Reddit</string>
+
+    <!-- time abbreviations -->
+    <string name="year_abbrev">%dy</string>
+    <string name="month_abbrev">%dm</string>
+    <string name="week_abbrev">%dw</string>
+    <string name="day_abbrev">%dd</string>
+    <string name="hour_abbrev">%dh</string>
+    <string name="minute_abbrev">%dm</string>
+    <string name="second_abbrev">%d</string>
 </resources>

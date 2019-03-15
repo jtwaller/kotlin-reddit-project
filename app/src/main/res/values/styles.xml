@@ -2,10 +2,29 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- List styles -->
+    <style name="TitleText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/grey</item>
+    </style>
+
+    <style name="MiddleBarText">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/lightGrey</item>
+    </style>
+
+    <style name="SubredditText" parent="MiddleBarText">
+        <item name="android:textColor">@color/red</item>
+    </style>
+
+    <style name="BottomBarText">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/grey</item>
     </style>
 
 </resources>

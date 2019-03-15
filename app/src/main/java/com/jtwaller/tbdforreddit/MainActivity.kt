@@ -4,8 +4,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import net.danlew.android.joda.JodaTimeAndroid
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,6 +25,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        JodaTimeAndroid.init(this)
+
         val mViewModel = ViewModelProviders.of(this).get(RedditResponseViewModel::class.java)
         mViewModel.mRedditLinkListSize.observe(this, Observer { listSize ->
             viewAdapter.notifyItemRangeInserted(currLinkListSize, listSize)
@@ -32,10 +36,13 @@ class MainActivity : AppCompatActivity() {
         viewManager = LinearLayoutManager(this)
         viewAdapter = MyAdapter(this, mViewModel.mRedditLinkList)
 
+        val mItemDividerItemDecoration = DividerItemDecoration(this, viewManager.orientation)
+
         recyclerView = findViewById<RecyclerView>(R.id.recycler_view).apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = viewAdapter
+            addItemDecoration(mItemDividerItemDecoration)
         }
 
         recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {

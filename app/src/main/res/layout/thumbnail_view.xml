@@ -1,31 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/title_text"
-        android:layout_height="wrap_content"
+    <LinearLayout
         android:layout_width="0dp"
-        android:padding="8dp"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/thumbnail"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="You've had a landscaper and a housekeeper since you were born.  The susnshine always kept you warm.  So why see the world?" />
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title_text"
+            style="@style/TitleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="4dp"
+            android:textColor="@color/grey"
+            tools:text="You've had a landscaper and a housekeeper since you were born.  The sunshine always kept you warm.  So why see the world?" />
+
+        <!-- Middle bar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="4dp">
+
+            <TextView
+                android:id="@+id/subreddit_text"
+                style="@style/SubredditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="4dp"
+                tools:text="me_irl" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="2dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_link" />
+
+            <TextView
+                android:id="@+id/domain_text"
+                style="@style/MiddleBarText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="4dp"
+                tools:text="m.imgur.com" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="2dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_person" />
+
+            <TextView
+                android:id="@+id/author_text"
+                style="@style/MiddleBarText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_marginEnd="8dp"
+                tools:text="some_username" />
+
+        </LinearLayout>
+
+        <!-- Bottom bar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:paddingBottom="0dp">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="4dp"
+                android:src="@drawable/ic_upvote_arrow"
+                android:contentDescription="@null" />
+
+            <TextView
+                android:id="@+id/upvote_count"
+                style="@style/MiddleBarText"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                tools:text="16.2k" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="4dp"
+                android:src="@drawable/ic_comment"
+                android:contentDescription="@null" />
+
+            <TextView
+                android:id="@+id/comment_count"
+                style="@style/MiddleBarText"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                tools:text="4.2k" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="2dp"
+                android:src="@drawable/ic_clock"
+                android:contentDescription="@null" />
+
+            <TextView
+                android:id="@+id/age_text"
+                style="@style/MiddleBarText"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                tools:text="8h" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/thumbnail"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:padding="5dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/title_text"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="16dp"
         android:contentDescription="@null"
         tools:srcCompat="@tools:sample/avatars" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
