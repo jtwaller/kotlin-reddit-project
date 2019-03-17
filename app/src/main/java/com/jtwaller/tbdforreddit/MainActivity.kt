@@ -11,11 +11,11 @@ import net.danlew.android.joda.JodaTimeAndroid
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var viewAdapter: RecyclerView.Adapter<*>
-    private lateinit var viewManager: LinearLayoutManager
+    private lateinit var mRecyclerView: RecyclerView
+    private lateinit var mViewAdapter: RecyclerView.Adapter<*>
+    private lateinit var mViewManager: LinearLayoutManager
 
-    private var currLinkListSize = 0
+    private var mCurrLinkListSize = 0
 
     companion object {
         const val TAG = "MainActivity"
@@ -29,25 +29,25 @@ class MainActivity : AppCompatActivity() {
 
         val mViewModel = ViewModelProviders.of(this).get(RedditResponseViewModel::class.java)
         mViewModel.mRedditLinkListSize.observe(this, Observer { listSize ->
-            viewAdapter.notifyItemRangeInserted(currLinkListSize, listSize)
-            currLinkListSize = listSize
+            mViewAdapter.notifyItemRangeInserted(mCurrLinkListSize, listSize)
+            mCurrLinkListSize = listSize
         })
 
-        viewManager = LinearLayoutManager(this)
-        viewAdapter = MyAdapter(this, mViewModel.mRedditLinkList)
+        mViewManager = LinearLayoutManager(this)
+        mViewAdapter = MyAdapter(this, mViewModel.mRedditLinkList)
 
-        val mItemDividerItemDecoration = DividerItemDecoration(this, viewManager.orientation)
+        val mItemDividerItemDecoration = DividerItemDecoration(this, mViewManager.orientation)
 
-        recyclerView = findViewById<RecyclerView>(R.id.recycler_view).apply {
+        mRecyclerView = findViewById<RecyclerView>(R.id.recycler_view).apply {
             setHasFixedSize(true)
-            layoutManager = viewManager
-            adapter = viewAdapter
+            layoutManager = mViewManager
+            adapter = mViewAdapter
             addItemDecoration(mItemDividerItemDecoration)
         }
 
-        recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+        mRecyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if(currLinkListSize - viewManager.findLastVisibleItemPosition() < 5) {
+                if(mCurrLinkListSize - mViewManager.findLastVisibleItemPosition() < 5) {
                     mViewModel.getLinks()
                 }
             }

@@ -14,7 +14,7 @@ import retrofit2.http.Query
 interface RedditApiService {
 
     @GET(".json")
-    fun getJson(@Query("after") after: String?): Deferred<Response<RedditObject>>
+    fun getJson(@Query("mAfter") after: String?): Deferred<Response<RedditObject>>
 
     companion object Factory {
             fun create(): RedditApiService {

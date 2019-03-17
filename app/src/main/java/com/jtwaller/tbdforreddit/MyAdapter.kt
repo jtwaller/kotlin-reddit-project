@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jtwaller.tbdforreddit.network.RedditT3
 import kotlinx.android.synthetic.main.thumbnail_view.view.*
 
-class MyAdapter(private val context: Context, private val mDataSet: ArrayList<RedditT3>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+class MyAdapter(private val context: Context, private val dataSet: ArrayList<RedditT3>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
     class MyViewHolder(val layout: LinearLayout, val viewType: Int) : RecyclerView.ViewHolder(layout)
 
@@ -32,15 +32,15 @@ class MyAdapter(private val context: Context, private val mDataSet: ArrayList<Re
 //            else -> -1
 //        }
 
-        val view =  LayoutInflater.from(parent.context)
+        val mView =  LayoutInflater.from(parent.context)
                 .inflate(R.layout.thumbnail_view, parent, false) as LinearLayout
 
-        return MyViewHolder(view, viewType)
+        return MyViewHolder(mView, viewType)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val mView = holder.layout
-        val mData = mDataSet[position].data
+        val mData = dataSet[position].data
         mView.apply {
             title_text.text = mData.title
 
@@ -75,7 +75,7 @@ class MyAdapter(private val context: Context, private val mDataSet: ArrayList<Re
     }
 
     override fun getItemCount(): Int {
-        return mDataSet.size
+        return dataSet.size
     }
 
 }
