@@ -1,6 +1,5 @@
 package com.jtwaller.tbdforreddit
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jtwaller.tbdforreddit.network.RedditApiService
@@ -39,7 +38,6 @@ class RedditResponseViewModel : ViewModel() {
 
             for(child in body.listingData.children) {
                 mRedditLinkList.add(child)
-                Log.d("tag", ": ${child.data.thumbnail}")
             }
 
             // cannot use setValue() from background thread!!
