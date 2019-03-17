@@ -55,9 +55,13 @@ class MyAdapter(private val context: Context, private val dataSet: ArrayList<Red
         }
 
         if (mData.over_18) {
+            GlideApp.with(context)
+                    .load(context.resources.getDrawable(R.drawable.nsfw_thumbnail))
+                    .centerCrop()
+                    .into(holder.layout.thumbnail)
             return
         } else {
-            val thumbnailUrl: String? = mDataSet[position].data.thumbnail
+            val thumbnailUrl: String? = dataSet[position].data.thumbnail
 
             thumbnailUrl?.let {
                 GlideApp.with(context)
