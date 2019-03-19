@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jtwaller.tbdforreddit.network.RedditT3
 import kotlinx.android.synthetic.main.thumbnail_view.view.*
 
-class MyAdapter(private val context: Context, private val dataSet: ArrayList<RedditT3>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+class PostListAdapter(private val context: Context, private val dataSet: ArrayList<RedditT3>) : RecyclerView.Adapter<PostListAdapter.PostViewHolder>() {
 
-    class MyViewHolder(val layout: LinearLayout, val viewType: Int) : RecyclerView.ViewHolder(layout)
+    class PostViewHolder(val layout: LinearLayout, val viewType: Int) : RecyclerView.ViewHolder(layout)
 
     enum class ItemViewType(val type: Int) {
         THUMBNAIL(0),
@@ -26,7 +26,7 @@ class MyAdapter(private val context: Context, private val dataSet: ArrayList<Red
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val mResourceId = when (viewType) {
             ItemViewType.NO_THUMBNAIL.type -> R.layout.no_thumbnail_view
             else -> R.layout.thumbnail_view
@@ -35,10 +35,10 @@ class MyAdapter(private val context: Context, private val dataSet: ArrayList<Red
         val view =  LayoutInflater.from(parent.context)
                 .inflate(mResourceId, parent, false) as LinearLayout
 
-        return MyViewHolder(view, viewType)
+        return PostViewHolder(view, viewType)
     }
 
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val mView = holder.layout
         val mData = dataSet[position].data
         mView.apply {
