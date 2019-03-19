@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.webkit.URLUtil
 import android.widget.LinearLayout
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.jtwaller.tbdforreddit.network.RedditT3
 import kotlinx.android.synthetic.main.thumbnail_view.view.*
@@ -58,7 +59,7 @@ class PostListAdapter(private val context: Context, private val dataSet: ArrayLi
 
         if (mData.over_18) {
             GlideApp.with(context)
-                    .load(context.resources.getDrawable(R.drawable.nsfw_thumbnail))
+                    .load(ResourcesCompat.getDrawable(context.resources, R.drawable.nsfw_thumbnail, null))
                     .centerCrop()
                     .into(holder.layout.thumbnail)
             return
