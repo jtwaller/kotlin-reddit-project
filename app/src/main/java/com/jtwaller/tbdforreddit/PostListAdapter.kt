@@ -20,7 +20,6 @@ class PostListAdapter(private val context: Context, private val dataSet: ArrayLi
     }
 
     override fun getItemViewType(position: Int): Int {
-
         return when (URLUtil.isValidUrl(dataSet[position].data.thumbnail)) {
             true -> ItemViewType.THUMBNAIL.type
             false -> ItemViewType.NO_THUMBNAIL.type
@@ -52,7 +51,6 @@ class PostListAdapter(private val context: Context, private val dataSet: ArrayLi
             upvote_count.text = mData.getUpvoteCount()
             comment_count.text = mData.getCommentCount()
             age_text.text = mData.getAgePeriod().printLongestUnit(this.context)
-
         }
 
         if (holder.viewType == ItemViewType.NO_THUMBNAIL.type) return
@@ -73,7 +71,6 @@ class PostListAdapter(private val context: Context, private val dataSet: ArrayLi
                         .into(holder.layout.thumbnail)
             }
         }
-
     }
 
     override fun getItemCount(): Int {
