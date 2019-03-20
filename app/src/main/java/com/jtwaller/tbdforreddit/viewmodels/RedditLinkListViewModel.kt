@@ -1,4 +1,4 @@
-package com.jtwaller.tbdforreddit
+package com.jtwaller.tbdforreddit.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,7 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 
-class RedditResponseViewModel : ViewModel() {
+class RedditLinkListViewModel : ViewModel() {
 
     init {
         getLinks()

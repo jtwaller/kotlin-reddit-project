@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jtwaller.tbdforreddit.PostListAdapter
 import com.jtwaller.tbdforreddit.R
-import com.jtwaller.tbdforreddit.RedditResponseViewModel
+import com.jtwaller.tbdforreddit.viewmodels.RedditLinkListViewModel
 import java.lang.RuntimeException
 
 class PostListFragment : Fragment() {
@@ -21,7 +21,7 @@ class PostListFragment : Fragment() {
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mViewAdapter: RecyclerView.Adapter<*>
     private lateinit var mViewManager: LinearLayoutManager
-    private lateinit var mViewModel: RedditResponseViewModel
+    private lateinit var mViewModel: RedditLinkListViewModel
 
     private lateinit var fragmentContext: Context
     private lateinit var fragmentView: View
@@ -41,7 +41,7 @@ class PostListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mViewModel = ViewModelProviders.of(this).get(RedditResponseViewModel::class.java)
+        mViewModel = ViewModelProviders.of(this).get(RedditLinkListViewModel::class.java)
         mViewAdapter = PostListAdapter(fragmentContext, mViewModel.mRedditLinkList)
         mViewManager = LinearLayoutManager(fragmentContext)
 
