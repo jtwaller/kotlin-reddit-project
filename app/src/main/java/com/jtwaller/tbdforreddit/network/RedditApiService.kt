@@ -16,8 +16,11 @@ interface RedditApiService {
     @GET(".json")
     fun getJson(@Query("after") after: String?): Deferred<Response<RedditObject>>
 
-    companion object Factory {
-            fun create(): RedditApiService {
+    companion object {
+        private var instance: RedditApiService? = null
+
+        fun get(): RedditApiService {
+            if (instance == null) {
                 val clientBuilder = OkHttpClient.Builder()
 
                 if (BuildConfig.DEBUG) {
@@ -33,8 +36,10 @@ interface RedditApiService {
                         .addConverterFactory(GsonConverterFactory.create())
                         .build()
 
-                return retrofit.create(RedditApiService::class.java)
+                instance = retrofit.create(RedditApiService::class.java)
             }
+            return instance!!
+        }
     }
 
 }

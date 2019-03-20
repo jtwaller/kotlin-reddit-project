@@ -26,7 +26,7 @@ class RedditResponseViewModel : ViewModel() {
         mIsLoading = true
 
         GlobalScope.async (Dispatchers.IO) {
-            val redditService = RedditApiService.create()
+            val redditService = RedditApiService.get()
 
             val request = redditService.getJson(mAfter)
             val response = request.await()
