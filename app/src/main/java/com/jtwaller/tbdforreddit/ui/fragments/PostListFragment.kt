@@ -1,4 +1,4 @@
-package com.jtwaller.tbdforreddit.ui
+package com.jtwaller.tbdforreddit.ui.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.jtwaller.tbdforreddit.PostListAdapter
+import com.jtwaller.tbdforreddit.ui.adapters.PostListAdapter
 import com.jtwaller.tbdforreddit.R
 import com.jtwaller.tbdforreddit.viewmodels.RedditLinkListViewModel
 import java.lang.RuntimeException

@@ -1,4 +1,4 @@
-package com.jtwaller.tbdforreddit
+package com.jtwaller.tbdforreddit.ui.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,8 +7,11 @@ import android.webkit.URLUtil
 import android.widget.LinearLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.jtwaller.tbdforreddit.GlideApp
+import com.jtwaller.tbdforreddit.R
 import com.jtwaller.tbdforreddit.network.RedditApiService
 import com.jtwaller.tbdforreddit.network.RedditT3
+import com.jtwaller.tbdforreddit.printLongestUnit
 import kotlinx.android.synthetic.main.thumbnail_view.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

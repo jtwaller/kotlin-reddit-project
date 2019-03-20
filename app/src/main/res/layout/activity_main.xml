@@ -9,7 +9,7 @@
 
     <fragment
         android:id="@+id/post_list"
-        android:name="com.jtwaller.tbdforreddit.ui.PostListFragment"
+        android:name="com.jtwaller.tbdforreddit.ui.fragments.PostListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
