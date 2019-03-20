@@ -9,12 +9,16 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface RedditApiService {
 
     @GET(".json")
     fun getJson(@Query("after") after: String?): Deferred<Response<RedditObject>>
+
+    @GET("{permalink}.json")
+    fun getComments(@Path("permalink", encoded = true) permalink: String) : Deferred<Response<RedditObject>>
 
     companion object {
         private var instance: RedditApiService? = null

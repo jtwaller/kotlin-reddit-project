@@ -7,10 +7,18 @@ import android.webkit.URLUtil
 import android.widget.LinearLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.jtwaller.tbdforreddit.network.RedditApiService
 import com.jtwaller.tbdforreddit.network.RedditT3
 import kotlinx.android.synthetic.main.thumbnail_view.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 
 class PostListAdapter(private val context: Context, private val dataSet: ArrayList<RedditT3>) : RecyclerView.Adapter<PostListAdapter.PostViewHolder>() {
+
+    companion object {
+        const val TAG = "PostListAdapter"
+    }
 
     class PostViewHolder(val layout: LinearLayout, val viewType: Int) : RecyclerView.ViewHolder(layout)
 
@@ -39,8 +47,9 @@ class PostListAdapter(private val context: Context, private val dataSet: ArrayLi
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
-        val mView = holder.layout
         val mData = dataSet[position].data
+
+        val mView = holder.layout
         mView.apply {
             title_text.text = mData.title
 
@@ -51,6 +60,18 @@ class PostListAdapter(private val context: Context, private val dataSet: ArrayLi
             upvote_count.text = mData.getUpvoteCount()
             comment_count.text = mData.getCommentCount()
             age_text.text = mData.getAgePeriod().printLongestUnit(this.context)
+
+            setOnClickListener {
+                GlobalScope.async (Dispatchers.IO) {
+                    val redditService = RedditApiService.get()
+
+                    val request = redditService.getComments(mData.permalink)
+                    val response = request.await()
+
+                    // TODO: Error handling
+                    val body = response.body() ?: return@async
+                }
+            }
         }
 
         if (holder.viewType == ItemViewType.NO_THUMBNAIL.type) return
@@ -60,7 +81,6 @@ class PostListAdapter(private val context: Context, private val dataSet: ArrayLi
                     .load(ResourcesCompat.getDrawable(context.resources, R.drawable.nsfw_thumbnail, null))
                     .centerCrop()
                     .into(holder.layout.thumbnail)
-            return
         } else {
             val thumbnailUrl: String? = dataSet[position].data.thumbnail
 
