@@ -7,9 +7,8 @@
     android:layout_height="match_parent"
     tools:context="com.jtwaller.tbdforreddit.MainActivity">
 
-    <fragment
-        android:id="@+id/post_list"
-        android:name="com.jtwaller.tbdforreddit.ui.fragments.PostListFragment"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
