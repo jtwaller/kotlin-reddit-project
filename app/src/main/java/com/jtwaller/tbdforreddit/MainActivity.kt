@@ -2,12 +2,12 @@ package com.jtwaller.tbdforreddit
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.FragmentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.jtwaller.tbdforreddit.ui.adapters.MainFragmentPagerAdapter
 import net.danlew.android.joda.JodaTimeAndroid
 
-class MainActivity : FragmentActivity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var mViewPager: ViewPager
     private lateinit var mPagerAdapter: MainFragmentPagerAdapter
