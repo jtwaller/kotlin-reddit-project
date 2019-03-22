@@ -3,7 +3,7 @@ package com.jtwaller.tbdforreddit.viewmodels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jtwaller.tbdforreddit.network.RedditApiService
-import com.jtwaller.tbdforreddit.network.RedditT3
+import com.jtwaller.tbdforreddit.models.RedditLinkObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -14,7 +14,7 @@ class RedditLinkListViewModel : ViewModel() {
         getLinks()
     }
 
-    val mRedditLinkList = ArrayList<RedditT3>()
+    val mRedditLinkList = ArrayList<RedditLinkObject>()
     val mRedditLinkListSize = MutableLiveData<Int>()
 
     var mAfter: String? = null
@@ -34,9 +34,9 @@ class RedditLinkListViewModel : ViewModel() {
             // TODO: Error handling
             val body = response.body() ?: return@async
 
-            mAfter = body.listingData.after
+            mAfter = body.data.after
 
-            for(child in body.listingData.children) {
+            for(child in body.data.children) {
                 mRedditLinkList.add(child)
             }
 

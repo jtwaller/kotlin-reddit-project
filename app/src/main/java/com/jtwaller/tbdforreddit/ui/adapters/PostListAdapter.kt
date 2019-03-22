@@ -10,14 +10,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jtwaller.tbdforreddit.GlideApp
 import com.jtwaller.tbdforreddit.R
 import com.jtwaller.tbdforreddit.network.RedditApiService
-import com.jtwaller.tbdforreddit.network.RedditT3
+import com.jtwaller.tbdforreddit.models.RedditLinkObject
 import com.jtwaller.tbdforreddit.printLongestUnit
 import kotlinx.android.synthetic.main.thumbnail_view.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 
-class PostListAdapter(private val context: Context, private val dataSet: ArrayList<RedditT3>) : RecyclerView.Adapter<PostListAdapter.PostViewHolder>() {
+class PostListAdapter(private val context: Context, private val dataSet: ArrayList<RedditLinkObject>) : RecyclerView.Adapter<PostListAdapter.PostViewHolder>() {
 
     companion object {
         const val TAG = "PostListAdapter"
@@ -60,15 +60,15 @@ class PostListAdapter(private val context: Context, private val dataSet: ArrayLi
             domain_text.text = mData.getDomain()
             author_text.text = mData.author
 
-            upvote_count.text = mData.getUpvoteCount()
-            comment_count.text = mData.getCommentCount()
+            upvote_count.text = mData.getShortFormatScore()
+            comment_count.text = mData.getShortFormatCommentCount()
             age_text.text = mData.getAgePeriod().printLongestUnit(this.context)
 
             setOnClickListener {
                 GlobalScope.async (Dispatchers.IO) {
                     val redditService = RedditApiService.get()
 
-                    val request = redditService.getComments(mData.permalink)
+                    val request = redditService.fetchCommentsPermalink(mData.permalink)
                     val response = request.await()
 
                     // TODO: Error handling
