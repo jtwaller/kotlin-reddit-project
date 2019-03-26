@@ -42,10 +42,10 @@ class PostListFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         mViewModel = ViewModelProviders.of(this).get(RedditLinkListViewModel::class.java)
-        mViewAdapter = PostListAdapter(fragmentContext, mViewModel.mRedditLinkList)
+        mViewAdapter = PostListAdapter(fragmentContext, mViewModel.redditLinkList)
         mViewManager = LinearLayoutManager(fragmentContext)
 
-        mViewModel.mRedditLinkListSize.observe(this, Observer { listSize ->
+        mViewModel.redditLinkListSize.observe(this, Observer { listSize ->
             mViewAdapter.notifyItemRangeInserted(mCurrLinkListSize, listSize)
             mCurrLinkListSize = listSize
         })

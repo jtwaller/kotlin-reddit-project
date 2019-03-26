@@ -14,8 +14,8 @@ class RedditLinkListViewModel : ViewModel() {
         getLinks()
     }
 
-    val mRedditLinkList = ArrayList<RedditLinkObject>()
-    val mRedditLinkListSize = MutableLiveData<Int>()
+    val redditLinkList = ArrayList<RedditLinkObject>()
+    val redditLinkListSize = MutableLiveData<Int>()
 
     var mAfter: String? = null
     var mIsLoading = false
@@ -37,11 +37,11 @@ class RedditLinkListViewModel : ViewModel() {
             mAfter = body.data.after
 
             for(child in body.data.children) {
-                mRedditLinkList.add(child)
+                redditLinkList.add(child)
             }
 
             // cannot use setValue() from background thread!!
-            mRedditLinkListSize.postValue(mRedditLinkList.size)
+            redditLinkListSize.postValue(redditLinkList.size)
 
             mIsLoading = false
         }
