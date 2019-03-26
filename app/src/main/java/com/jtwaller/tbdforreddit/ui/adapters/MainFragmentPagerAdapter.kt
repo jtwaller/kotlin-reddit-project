@@ -10,7 +10,7 @@ import com.jtwaller.tbdforreddit.ui.fragments.PostListFragment
 class MainFragmentPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
     companion object {
-        const val TAG = "MainFragmentPagerAdapte"
+        const val TAG = "MainFragmentPagerAdapte" // Cut short for log 23 character limit
     }
 
     override fun getItem(position: Int): Fragment {
