@@ -1,18 +1,17 @@
 package com.jtwaller.tbdforreddit.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.gson.Gson
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import com.jtwaller.tbdforreddit.GlideApp
 import com.jtwaller.tbdforreddit.R
-import com.jtwaller.tbdforreddit.models.RedditCommentListingObject
-import com.jtwaller.tbdforreddit.models.RedditLinkListingObject
-import com.jtwaller.tbdforreddit.network.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import com.jtwaller.tbdforreddit.printLongestUnit
+import com.jtwaller.tbdforreddit.viewmodels.RedditCommentFragmentViewModel
+import kotlinx.android.synthetic.main.fragment_comments.view.*
 
 class CommentFragment : Fragment() {
 
@@ -20,26 +19,36 @@ class CommentFragment : Fragment() {
         const val TAG = "CommentFragment"
     }
 
+    private lateinit var mViewModel: RedditCommentFragmentViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        mViewModel = ViewModelProviders.of(this).get(RedditCommentFragmentViewModel::class.java)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val mView = inflater.inflate(R.layout.fragment_comments, container, false)
 
-        GlobalScope.async {
-            val redditService = RedditApiService.get()
+        mViewModel.isLoading.observe(this, Observer {
+            if (it == false) {
+                mView.apply {
+                    title_text.text = mViewModel.linkData.title
+                    subreddit_text.text = mViewModel.linkData.subreddit
+                    domain_text.text = mViewModel.linkData.getDomain()
+                    author_text.text = mViewModel.linkData.author
+                    upvote_count.text = mViewModel.linkData.getShortFormatScore()
+                    comment_count.text = mViewModel.linkData.getShortFormatCommentCount()
+                    age_text.text = mViewModel.linkData.getAgePeriod().printLongestUnit(this.context)
+                }
 
-            val permalink = "r/hearthstone/comments/b3vald/i_felt_this_deep_in_my_core/"
+                GlideApp.with(this)
+                        .load(mViewModel.linkData.url)
+                        .into(mView.link_image)
+            }
+        })
 
-            val request = redditService.fetchCommentsPermalink(permalink)
-            val response = request.await()
-
-            val jsonElement = response.body() ?: return@async
-
-            val linkList = Gson().fromJson(jsonElement.asJsonArray.get(0), RedditLinkListingObject::class.java)
-            val commentList = Gson().fromJson(jsonElement.asJsonArray.get(1), RedditCommentListingObject::class.java)
-
-            Log.d(TAG, ": ${linkList.data.children.get(0).data.title}")
-            Log.d(TAG, ": ${commentList.data.children.get(0).data.body}")
-        }
-
-        return inflater.inflate(R.layout.fragment_comments, container, false)
+        return mView
     }
 
 }
