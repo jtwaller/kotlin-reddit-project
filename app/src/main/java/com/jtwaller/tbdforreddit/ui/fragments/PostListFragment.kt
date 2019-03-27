@@ -20,7 +20,6 @@ class PostListFragment : Fragment() {
 
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mViewAdapter: RecyclerView.Adapter<*>
-    private lateinit var mViewManager: LinearLayoutManager
     private lateinit var mViewModel: RedditLinkListViewModel
 
     private lateinit var fragmentContext: Context
@@ -43,7 +42,6 @@ class PostListFragment : Fragment() {
 
         mViewModel = ViewModelProviders.of(this).get(RedditLinkListViewModel::class.java)
         mViewAdapter = PostListAdapter(fragmentContext, mViewModel.redditLinkList)
-        mViewManager = LinearLayoutManager(fragmentContext)
 
         mViewModel.redditLinkListSize.observe(this, Observer { listSize ->
             mViewAdapter.notifyItemRangeInserted(mCurrLinkListSize, listSize)
@@ -55,6 +53,7 @@ class PostListFragment : Fragment() {
         fragmentView = inflater.inflate(R.layout.fragment_post_list, container, false) ?:
                 throw RuntimeException("Unable to inflate view")
 
+        val mViewManager = LinearLayoutManager(fragmentContext)
         val mItemDividerItemDecoration = DividerItemDecoration(fragmentContext, mViewManager.orientation)
 
         mRecyclerView = fragmentView.findViewById<RecyclerView>(R.id.recycler_view).apply {
