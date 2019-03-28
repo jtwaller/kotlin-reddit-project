@@ -1,21 +1,22 @@
 package com.jtwaller.tbdforreddit.ui.adapters
 
+import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.webkit.URLUtil
 import android.widget.LinearLayout
 import androidx.core.content.res.ResourcesCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jtwaller.tbdforreddit.GlideApp
+import com.jtwaller.tbdforreddit.MainActivity
 import com.jtwaller.tbdforreddit.R
-import com.jtwaller.tbdforreddit.network.RedditApiService
 import com.jtwaller.tbdforreddit.models.RedditLinkObject
 import com.jtwaller.tbdforreddit.printLongestUnit
 import kotlinx.android.synthetic.main.thumbnail_view.view.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 
 class PostListAdapter(private val context: Context, private val dataSet: ArrayList<RedditLinkObject>) : RecyclerView.Adapter<PostListAdapter.PostViewHolder>() {
 
@@ -65,15 +66,16 @@ class PostListAdapter(private val context: Context, private val dataSet: ArrayLi
             age_text.text = mData.getAgePeriod().printLongestUnit(this.context)
 
             setOnClickListener {
-                GlobalScope.async (Dispatchers.IO) {
-                    val redditService = RedditApiService.get()
-
-                    val request = redditService.fetchCommentsPermalink(mData.permalink)
-                    val response = request.await()
-
-                    // TODO: Error handling
-                    val body = response.body() ?: return@async
+                val mIntent = Intent().apply {
+                    component = ComponentName(context, MainActivity::class.java)
+                    action = MainActivity.BUILD_FRAGMENT_ACTION
                 }
+
+                LocalBroadcastManager
+                        .getInstance(context)
+                        .sendBroadcast(mIntent)
+
+                Log.d(TAG, ": Broadcasting intent $mIntent")
             }
         }
 
