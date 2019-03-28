@@ -14,13 +14,12 @@ class RedditCommentFragmentViewModel : ViewModel() {
         const val TAG = "CommentFragmentViewModel"
     }
 
-    val isLoading: MutableLiveData<Boolean>
+    val isLoading: MutableLiveData<Boolean> = MutableLiveData()
 
     lateinit var linkData: RedditLinkData
     lateinit var commentListingData: ArrayList<RedditCommentData>
 
     init {
-        isLoading = MutableLiveData()
         isLoading.value = true
 
         GlobalScope.async {
