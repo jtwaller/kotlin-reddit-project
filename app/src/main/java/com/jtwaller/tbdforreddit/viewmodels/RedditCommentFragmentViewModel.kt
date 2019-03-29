@@ -8,7 +8,7 @@ import com.jtwaller.tbdforreddit.network.RedditApiService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 
-class RedditCommentFragmentViewModel : ViewModel() {
+class RedditCommentFragmentViewModel: ViewModel() {
 
     companion object {
         const val TAG = "CommentFragmentViewModel"
@@ -21,11 +21,13 @@ class RedditCommentFragmentViewModel : ViewModel() {
 
     init {
         isLoading.value = true
+    }
+
+    fun load(permalink: String) {
+        isLoading.value = true
 
         GlobalScope.async {
             val redditService = RedditApiService.get()
-
-            val permalink = "r/hearthstone/comments/b3vald/i_felt_this_deep_in_my_core/"
 
             val request = redditService.fetchCommentsPermalink(permalink)
             val response = request.await()
@@ -39,7 +41,6 @@ class RedditCommentFragmentViewModel : ViewModel() {
 
             isLoading.postValue(false)
         }
-
     }
 
 }

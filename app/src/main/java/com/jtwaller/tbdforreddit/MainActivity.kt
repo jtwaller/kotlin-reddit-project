@@ -6,16 +6,13 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.viewpager.widget.ViewPager
-import com.jtwaller.tbdforreddit.ui.adapters.MainFragmentPagerAdapter
+import com.jtwaller.tbdforreddit.ui.fragments.CommentFragment
 import net.danlew.android.joda.JodaTimeAndroid
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : FragmentActivity() {
 
-    private lateinit var mViewPager: ViewPager
-    private lateinit var mPagerAdapter: MainFragmentPagerAdapter
     private lateinit var mBroadcastReceiver: MainBroadcastReceiver
 
     companion object {
@@ -28,29 +25,36 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         JodaTimeAndroid.init(this)
-        mBroadcastReceiver = MainBroadcastReceiver()
+        mBroadcastReceiver = MainBroadcastReceiver(this)
 
         LocalBroadcastManager
                 .getInstance(this)
                 .registerReceiver(mBroadcastReceiver, IntentFilter(BUILD_FRAGMENT_ACTION))
 
-        mPagerAdapter = MainFragmentPagerAdapter(supportFragmentManager)
-        mViewPager = findViewById(R.id.pager)
-        mViewPager.adapter = mPagerAdapter
-
-        mViewPager.addOnPageChangeListener(
-                object : ViewPager.SimpleOnPageChangeListener() {
-                    override fun onPageSelected(position: Int) {
-                        Log.d(TAG, ": onPageSelected $position")
-                        mViewPager.currentItem = position
-                    }
-                }
-        )
     }
 
-    class MainBroadcastReceiver : BroadcastReceiver() {
+    fun loadCommentsFragment(permalink: String) {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+
+        val commentFragment = CommentFragment.newInstance(permalink)
+
+        fragmentTransaction.apply {
+            setCustomAnimations(
+                    R.anim.enter_from_right,
+                    R.anim.exit_to_right,
+                    R.anim.enter_from_right,
+                    R.anim.exit_to_right)
+            replace(R.id.fragment, commentFragment)
+            addToBackStack(null)
+            commit()
+        }
+    }
+
+    class MainBroadcastReceiver(private val parent: MainActivity) : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             Log.d(TAG, ": $intent")
+            parent.loadCommentsFragment(intent!!.extras.get("permalink") as String)
         }
     }
 

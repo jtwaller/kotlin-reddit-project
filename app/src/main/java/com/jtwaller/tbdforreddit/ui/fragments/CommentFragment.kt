@@ -13,18 +13,30 @@ import com.jtwaller.tbdforreddit.printLongestUnit
 import com.jtwaller.tbdforreddit.viewmodels.RedditCommentFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_comments.view.*
 
-class CommentFragment : Fragment() {
+class CommentFragment: Fragment() {
 
     companion object {
         const val TAG = "CommentFragment"
+
+        fun newInstance(permalink: String): CommentFragment {
+            val args = Bundle()
+            args.putString("permalink", permalink)
+
+            val frag = CommentFragment()
+            frag.arguments = args
+
+            return frag
+        }
     }
 
     private lateinit var mViewModel: RedditCommentFragmentViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val permalink = arguments!!.get("permalink") as String
 
         mViewModel = ViewModelProviders.of(this).get(RedditCommentFragmentViewModel::class.java)
+        mViewModel.load(permalink)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

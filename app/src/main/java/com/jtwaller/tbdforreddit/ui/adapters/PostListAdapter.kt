@@ -44,7 +44,7 @@ class PostListAdapter(private val context: Context, private val dataSet: ArrayLi
             else -> R.layout.thumbnail_view
         }
 
-        val view =  LayoutInflater.from(parent.context)
+        val view = LayoutInflater.from(parent.context)
                 .inflate(mResourceId, parent, false) as LinearLayout
 
         return PostViewHolder(view, viewType)
@@ -69,6 +69,7 @@ class PostListAdapter(private val context: Context, private val dataSet: ArrayLi
                 val mIntent = Intent().apply {
                     component = ComponentName(context, MainActivity::class.java)
                     action = MainActivity.BUILD_FRAGMENT_ACTION
+                    putExtra("permalink", mData.permalink)
                 }
 
                 LocalBroadcastManager
