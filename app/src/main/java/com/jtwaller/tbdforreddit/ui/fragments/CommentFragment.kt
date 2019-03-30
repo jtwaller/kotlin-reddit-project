@@ -9,7 +9,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.jtwaller.tbdforreddit.GlideApp
 import com.jtwaller.tbdforreddit.R
+import com.jtwaller.tbdforreddit.models.RedditLinkData
 import com.jtwaller.tbdforreddit.printLongestUnit
+import com.jtwaller.tbdforreddit.ui.adapters.PostListAdapter.Companion.REDDIT_LINK_DATA
 import com.jtwaller.tbdforreddit.viewmodels.RedditCommentFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_comments.view.*
 
@@ -18,9 +20,9 @@ class CommentFragment: Fragment() {
     companion object {
         const val TAG = "CommentFragment"
 
-        fun newInstance(permalink: String): CommentFragment {
+        fun newInstance(redditLinkData: RedditLinkData): CommentFragment {
             val args = Bundle()
-            args.putString("permalink", permalink)
+            args.putParcelable(REDDIT_LINK_DATA, redditLinkData)
 
             val frag = CommentFragment()
             frag.arguments = args
@@ -30,30 +32,31 @@ class CommentFragment: Fragment() {
     }
 
     private lateinit var mViewModel: RedditCommentFragmentViewModel
+    private lateinit var mParentLinkData: RedditLinkData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val permalink = arguments!!.get("permalink") as String
+        mParentLinkData = arguments!!.get(REDDIT_LINK_DATA) as RedditLinkData
 
         mViewModel = ViewModelProviders.of(this).get(RedditCommentFragmentViewModel::class.java)
-        mViewModel.load(permalink)
+        mViewModel.load(mParentLinkData.permalink)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val mView = inflater.inflate(R.layout.fragment_comments, container, false)
 
+        mView.apply {
+            title_text.text = mParentLinkData.title
+            subreddit_text.text = mParentLinkData.subreddit
+            domain_text.text = mParentLinkData.getDomain()
+            author_text.text = mParentLinkData.author
+            upvote_count.text = mParentLinkData.getShortFormatScore()
+            comment_count.text = mParentLinkData.getShortFormatCommentCount()
+            age_text.text = mParentLinkData.getAgePeriod().printLongestUnit(this.context)
+        }
+
         mViewModel.isLoading.observe(this, Observer {
             if (it == false) {
-                mView.apply {
-                    title_text.text = mViewModel.linkData.title
-                    subreddit_text.text = mViewModel.linkData.subreddit
-                    domain_text.text = mViewModel.linkData.getDomain()
-                    author_text.text = mViewModel.linkData.author
-                    upvote_count.text = mViewModel.linkData.getShortFormatScore()
-                    comment_count.text = mViewModel.linkData.getShortFormatCommentCount()
-                    age_text.text = mViewModel.linkData.getAgePeriod().printLongestUnit(this.context)
-                }
-
                 GlideApp.with(this)
                         .load(mViewModel.linkData.url)
                         .into(mView.link_image)

@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.jtwaller.tbdforreddit.models.RedditLinkData
+import com.jtwaller.tbdforreddit.ui.adapters.PostListAdapter.Companion.REDDIT_LINK_DATA
 import com.jtwaller.tbdforreddit.ui.fragments.CommentFragment
 import net.danlew.android.joda.JodaTimeAndroid
 
@@ -33,11 +35,11 @@ class MainActivity : FragmentActivity() {
 
     }
 
-    fun loadCommentsFragment(permalink: String) {
+    fun loadCommentsFragment(redditLinkData: RedditLinkData) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
 
-        val commentFragment = CommentFragment.newInstance(permalink)
+        val commentFragment = CommentFragment.newInstance(redditLinkData)
 
         fragmentTransaction.apply {
             setCustomAnimations(
@@ -54,7 +56,8 @@ class MainActivity : FragmentActivity() {
     class MainBroadcastReceiver(private val parent: MainActivity) : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             Log.d(TAG, ": $intent")
-            parent.loadCommentsFragment(intent!!.extras.get("permalink") as String)
+            val mRedditLinkData = intent!!.extras.get(REDDIT_LINK_DATA) as RedditLinkData
+            parent.loadCommentsFragment(mRedditLinkData)
         }
     }
 

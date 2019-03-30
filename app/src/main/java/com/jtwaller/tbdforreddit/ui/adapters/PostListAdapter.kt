@@ -22,6 +22,7 @@ class PostListAdapter(private val context: Context, private val dataSet: ArrayLi
 
     companion object {
         const val TAG = "PostListAdapter"
+        const val REDDIT_LINK_DATA = "REDDIT_LINK_DATA"
     }
 
     class PostViewHolder(val layout: LinearLayout, val viewType: Int) : RecyclerView.ViewHolder(layout)
@@ -69,7 +70,7 @@ class PostListAdapter(private val context: Context, private val dataSet: ArrayLi
                 val mIntent = Intent().apply {
                     component = ComponentName(context, MainActivity::class.java)
                     action = MainActivity.BUILD_FRAGMENT_ACTION
-                    putExtra("permalink", mData.permalink)
+                    putExtra(REDDIT_LINK_DATA, mData)
                 }
 
                 LocalBroadcastManager

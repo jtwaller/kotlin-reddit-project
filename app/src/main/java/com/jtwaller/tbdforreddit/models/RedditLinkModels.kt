@@ -1,5 +1,7 @@
 package com.jtwaller.tbdforreddit.models
 
+import android.os.Parcel
+import android.os.Parcelable
 import java.net.URL
 
 class RedditLinkListingObject(
@@ -31,7 +33,21 @@ class RedditLinkData(
         val num_comments: Int,
         val over_18: Boolean,
         val pinned: Boolean
-) : RedditDataObject {
+) : RedditDataObject, Parcelable {
+    constructor(parcel: Parcel) : this(
+            parcel.readString(),
+            parcel.readInt(),
+            parcel.readInt(),
+            parcel.readLong(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readInt(),
+            parcel.readByte() != 0.toByte(),
+            parcel.readByte() != 0.toByte())
+
     fun getShortFormatCommentCount(): String {
         return if (num_comments < 1000) {
             num_comments.toString()
@@ -43,5 +59,34 @@ class RedditLinkData(
     fun getDomain(): String {
         val host = URL(url).host
         return if (host.startsWith("www.")) host.substring(4) else host
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(author)
+        parcel.writeInt(score)
+        parcel.writeInt(gilded)
+        parcel.writeLong(created_utc)
+        parcel.writeString(permalink)
+        parcel.writeString(subreddit)
+        parcel.writeString(title)
+        parcel.writeString(url)
+        parcel.writeString(thumbnail)
+        parcel.writeInt(num_comments)
+        parcel.writeByte(if (over_18) 1 else 0)
+        parcel.writeByte(if (pinned) 1 else 0)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<RedditLinkData> {
+        override fun createFromParcel(parcel: Parcel): RedditLinkData {
+            return RedditLinkData(parcel)
+        }
+
+        override fun newArray(size: Int): Array<RedditLinkData?> {
+            return arrayOfNulls(size)
+        }
     }
 }
