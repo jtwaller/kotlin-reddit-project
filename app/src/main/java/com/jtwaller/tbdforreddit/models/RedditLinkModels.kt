@@ -2,6 +2,7 @@ package com.jtwaller.tbdforreddit.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import java.lang.IllegalStateException
 import java.net.URL
 
 class RedditLinkListingObject(
@@ -35,15 +36,15 @@ class RedditLinkData(
         val pinned: Boolean
 ) : RedditDataObject, Parcelable {
     constructor(parcel: Parcel) : this(
-            parcel.readString(),
+            parcel.readString() ?: throw IllegalStateException("Invalid RedditLinkData"),
             parcel.readInt(),
             parcel.readInt(),
             parcel.readLong(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
+            parcel.readString() ?: throw IllegalStateException("Invalid RedditLinkData"),
+            parcel.readString() ?: throw IllegalStateException("Invalid RedditLinkData"),
+            parcel.readString() ?: throw IllegalStateException("Invalid RedditLinkData"),
+            parcel.readString() ?: throw IllegalStateException("Invalid RedditLinkData"),
+            parcel.readString()  ?: throw IllegalStateException("Invalid RedditLinkData"),
             parcel.readInt(),
             parcel.readByte() != 0.toByte(),
             parcel.readByte() != 0.toByte())
