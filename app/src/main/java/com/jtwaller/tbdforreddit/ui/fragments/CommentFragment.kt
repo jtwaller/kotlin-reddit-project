@@ -1,6 +1,9 @@
 package com.jtwaller.tbdforreddit.ui.fragments
 
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,13 +58,38 @@ class CommentFragment: Fragment() {
             age_text.text = mParentLinkData.getAgePeriod().printLongestUnit(this.context)
         }
 
-        mViewModel.isLoading.observe(this, Observer {
-            if (it == false) {
-                GlideApp.with(this)
-                        .load(mViewModel.linkData.url)
-                        .into(mView.link_image)
-            }
-        })
+        val width = mParentLinkData.preview?.images?.get(0)?.source?.width ?: -1
+        val height = mParentLinkData.preview?.images?.get(0)?.source?.height ?: -1
+
+        if (width > 0 && height > 0) {
+
+            val metrics = DisplayMetrics()
+            this.activity!!.windowManager.defaultDisplay.getMetrics(metrics)
+
+            val deviceWidth = metrics.widthPixels
+
+            val resizeRatio: Float = deviceWidth.toFloat() / width
+            val placeholderWidth = resizeRatio * width
+            val placeholderHeight = resizeRatio * height
+
+            val bitmap = Bitmap.createBitmap(
+                    placeholderWidth.toInt(),
+                    placeholderHeight.toInt(),
+                    Bitmap.Config.ARGB_8888)
+
+            bitmap.eraseColor(android.graphics.Color.GRAY)
+
+            GlideApp.with(this)
+                    .load(mParentLinkData.url)
+                    .placeholder(BitmapDrawable(context?.resources, bitmap))
+                    .into(mView.link_image)
+
+            mViewModel.isLoading.observe(this, Observer {
+                if (it == false) {
+                    // Load comments
+                }
+            })
+        }
 
         return mView
     }
