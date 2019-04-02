@@ -30,7 +30,6 @@ class MainActivity : FragmentActivity() {
         LocalBroadcastManager
                 .getInstance(this)
                 .registerReceiver(mBroadcastReceiver, IntentFilter(BUILD_FRAGMENT_ACTION))
-
     }
 
     fun loadCommentsFragment(redditLinkData: RedditLinkData) {
