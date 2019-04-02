@@ -40,7 +40,7 @@ class RedditLinkListViewModel : ViewModel() {
                 redditLinkList.add(child)
             }
 
-            // cannot use setValue() from background thread!!
+            // cannot use setValue() from background thread
             redditLinkListSize.postValue(redditLinkList.size)
 
             mIsLoading = false

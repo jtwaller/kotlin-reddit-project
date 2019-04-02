@@ -56,11 +56,9 @@ class PostListAdapter(private val context: Context, private val dataSet: ArrayLi
         val mView = holder.layout
         mView.apply {
             title_text.text = mData.title
-
             subreddit_text.text = mData.subreddit
             domain_text.text = mData.getDomain()
             author_text.text = mData.author
-
             upvote_count.text = mData.getShortFormatScore()
             comment_count.text = mData.getShortFormatCommentCount()
             age_text.text = mData.getAgePeriod().printLongestUnit(this.context)
@@ -72,9 +70,7 @@ class PostListAdapter(private val context: Context, private val dataSet: ArrayLi
                     putExtra(REDDIT_LINK_DATA, mData)
                 }
 
-                LocalBroadcastManager
-                        .getInstance(context)
-                        .sendBroadcast(mIntent)
+                LocalBroadcastManager.getInstance(context).sendBroadcast(mIntent)
             }
         }
 

@@ -16,18 +16,18 @@ import com.jtwaller.tbdforreddit.models.RedditLinkData
 import com.jtwaller.tbdforreddit.printLongestUnit
 import com.jtwaller.tbdforreddit.ui.adapters.PostListAdapter.Companion.REDDIT_LINK_DATA
 import com.jtwaller.tbdforreddit.viewmodels.RedditCommentFragmentViewModel
-import kotlinx.android.synthetic.main.fragment_comments.view.*
+import kotlinx.android.synthetic.main.fragment_detail.view.*
 
-class CommentFragment: Fragment() {
+class DetailFragment: Fragment() {
 
     companion object {
-        const val TAG = "CommentFragment"
+        const val TAG = "DetailFragment"
 
-        fun newInstance(redditLinkData: RedditLinkData): CommentFragment {
+        fun newInstance(redditLinkData: RedditLinkData): DetailFragment {
             val args = Bundle()
             args.putParcelable(REDDIT_LINK_DATA, redditLinkData)
 
-            val frag = CommentFragment()
+            val frag = DetailFragment()
             frag.arguments = args
 
             return frag
@@ -46,7 +46,7 @@ class CommentFragment: Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val mView = inflater.inflate(R.layout.fragment_comments, container, false)
+        val mView = inflater.inflate(R.layout.fragment_detail, container, false)
 
         mView.apply {
             title_text.text = mParentLinkData.title
@@ -62,36 +62,40 @@ class CommentFragment: Fragment() {
         val height = mParentLinkData.preview?.images?.get(0)?.source?.height ?: -1
 
         if (width > 0 && height > 0) {
-
-            val metrics = DisplayMetrics()
-            this.activity!!.windowManager.defaultDisplay.getMetrics(metrics)
-
-            val deviceWidth = metrics.widthPixels
-
-            val resizeRatio: Float = deviceWidth.toFloat() / width
-            val placeholderWidth = resizeRatio * width
-            val placeholderHeight = resizeRatio * height
-
-            val bitmap = Bitmap.createBitmap(
-                    placeholderWidth.toInt(),
-                    placeholderHeight.toInt(),
-                    Bitmap.Config.ARGB_8888)
-
-            bitmap.eraseColor(android.graphics.Color.GRAY)
-
             GlideApp.with(this)
                     .load(mParentLinkData.url)
-                    .placeholder(BitmapDrawable(context?.resources, bitmap))
+                    .placeholder(createPlaceholder(width, height))
                     .into(mView.link_image)
 
-            mViewModel.isLoading.observe(this, Observer {
-                if (it == false) {
-                    // Load comments
-                }
-            })
         }
 
+        mViewModel.isLoading.observe(this, Observer {
+            if (it == false) {
+                // Load comments
+            }
+        })
+
         return mView
+    }
+
+    private fun createPlaceholder(srcWidth: Int, srcHeight: Int): BitmapDrawable {
+        val metrics = DisplayMetrics()
+        this.activity!!.windowManager.defaultDisplay.getMetrics(metrics)
+
+        val deviceWidth = metrics.widthPixels
+
+        val resizeRatio: Float = deviceWidth.toFloat() / srcWidth
+        val placeholderWidth = resizeRatio * srcWidth
+        val placeholderHeight = resizeRatio * srcHeight
+
+        val bitmap = Bitmap.createBitmap(
+                placeholderWidth.toInt(),
+                placeholderHeight.toInt(),
+                Bitmap.Config.ARGB_8888)
+
+        bitmap.eraseColor(android.graphics.Color.GRAY)
+
+        return BitmapDrawable(context?.resources, bitmap)
     }
 
 }

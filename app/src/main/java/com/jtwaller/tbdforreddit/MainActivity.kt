@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.jtwaller.tbdforreddit.models.RedditLinkData
 import com.jtwaller.tbdforreddit.ui.adapters.PostListAdapter.Companion.REDDIT_LINK_DATA
-import com.jtwaller.tbdforreddit.ui.fragments.CommentFragment
+import com.jtwaller.tbdforreddit.ui.fragments.DetailFragment
 import net.danlew.android.joda.JodaTimeAndroid
 import java.lang.ClassCastException
 
@@ -32,11 +32,11 @@ class MainActivity : FragmentActivity() {
                 .registerReceiver(mBroadcastReceiver, IntentFilter(BUILD_FRAGMENT_ACTION))
     }
 
-    fun loadCommentsFragment(redditLinkData: RedditLinkData) {
+    fun createDetailFragment(redditLinkData: RedditLinkData) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
 
-        val commentFragment = CommentFragment.newInstance(redditLinkData)
+        val commentFragment = DetailFragment.newInstance(redditLinkData)
 
         fragmentTransaction.apply {
             setCustomAnimations(
@@ -54,7 +54,7 @@ class MainActivity : FragmentActivity() {
         override fun onReceive(context: Context?, intent: Intent?) {
             try {
                 val mRedditLinkData = intent?.extras?.get(REDDIT_LINK_DATA) as RedditLinkData
-                parent.loadCommentsFragment(mRedditLinkData)
+                parent.createDetailFragment(mRedditLinkData)
             } catch (e: ClassCastException) {
                 AlertDialog.Builder(parent)
                         .setMessage(R.string.invalid_linkdata_broadcast)

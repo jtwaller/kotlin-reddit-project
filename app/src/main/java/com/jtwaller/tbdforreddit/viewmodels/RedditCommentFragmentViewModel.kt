@@ -16,7 +16,6 @@ class RedditCommentFragmentViewModel: ViewModel() {
 
     val isLoading: MutableLiveData<Boolean> = MutableLiveData()
 
-    lateinit var linkData: RedditLinkData
     lateinit var commentListingData: ArrayList<RedditCommentData>
 
     init {
@@ -34,10 +33,7 @@ class RedditCommentFragmentViewModel: ViewModel() {
 
             val jsonElement = response.body() ?: return@async
 
-            val linkList = Gson().fromJson(jsonElement.asJsonArray.get(0), RedditLinkListingObject::class.java)
             val commentList = Gson().fromJson(jsonElement.asJsonArray.get(1), RedditCommentListingObject::class.java)
-
-            linkData = linkList.data.children.get(0).data
 
             isLoading.postValue(false)
         }

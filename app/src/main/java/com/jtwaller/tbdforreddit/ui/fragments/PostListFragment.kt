@@ -50,17 +50,18 @@ class PostListFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val mViewManager = LinearLayoutManager(fragmentContext)
+
         fragmentView = inflater.inflate(R.layout.fragment_post_list, container, false) ?:
                 throw RuntimeException("Unable to inflate view")
 
-        val mViewManager = LinearLayoutManager(fragmentContext)
-        val mItemDividerItemDecoration = DividerItemDecoration(fragmentContext, mViewManager.orientation)
+        mRecyclerView = fragmentView.findViewById(R.id.recycler_view)
 
-        mRecyclerView = fragmentView.findViewById<RecyclerView>(R.id.recycler_view).apply {
+        mRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = mViewManager
             adapter = mViewAdapter
-            addItemDecoration(mItemDividerItemDecoration)
+            addItemDecoration(DividerItemDecoration(fragmentContext, mViewManager.orientation))
         }
 
         mRecyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
