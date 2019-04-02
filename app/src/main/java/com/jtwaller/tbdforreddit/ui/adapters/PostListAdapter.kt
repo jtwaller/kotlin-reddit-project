@@ -3,7 +3,6 @@ package com.jtwaller.tbdforreddit.ui.adapters
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.webkit.URLUtil
@@ -76,8 +75,6 @@ class PostListAdapter(private val context: Context, private val dataSet: ArrayLi
                 LocalBroadcastManager
                         .getInstance(context)
                         .sendBroadcast(mIntent)
-
-                Log.d(TAG, ": Broadcasting intent $mIntent")
             }
         }
 

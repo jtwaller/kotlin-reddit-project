@@ -1,17 +1,15 @@
 package com.jtwaller.tbdforreddit
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.os.Bundle
-import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.jtwaller.tbdforreddit.models.RedditLinkData
 import com.jtwaller.tbdforreddit.ui.adapters.PostListAdapter.Companion.REDDIT_LINK_DATA
 import com.jtwaller.tbdforreddit.ui.fragments.CommentFragment
 import net.danlew.android.joda.JodaTimeAndroid
+import java.lang.ClassCastException
 
 class MainActivity : FragmentActivity() {
 
@@ -55,9 +53,16 @@ class MainActivity : FragmentActivity() {
 
     class MainBroadcastReceiver(private val parent: MainActivity) : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            Log.d(TAG, ": $intent")
-            val mRedditLinkData = intent!!.extras.get(REDDIT_LINK_DATA) as RedditLinkData
-            parent.loadCommentsFragment(mRedditLinkData)
+            try {
+                val mRedditLinkData = intent?.extras?.get(REDDIT_LINK_DATA) as RedditLinkData
+                parent.loadCommentsFragment(mRedditLinkData)
+            } catch (e: ClassCastException) {
+                AlertDialog.Builder(parent)
+                        .setMessage(R.string.invalid_linkdata_broadcast)
+                        .setPositiveButton(android.R.string.ok) { dialog, _ -> dialog.dismiss() }
+                        .create()
+                        .show()
+            }
         }
     }
 
