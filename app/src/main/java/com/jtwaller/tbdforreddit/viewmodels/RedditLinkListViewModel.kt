@@ -6,7 +6,7 @@ import com.jtwaller.tbdforreddit.network.RedditApiService
 import com.jtwaller.tbdforreddit.models.RedditLinkObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class RedditLinkListViewModel : ViewModel() {
 
@@ -25,14 +25,14 @@ class RedditLinkListViewModel : ViewModel() {
 
         mIsLoading = true
 
-        GlobalScope.async (Dispatchers.IO) {
+        GlobalScope.launch (Dispatchers.IO) {
             val redditService = RedditApiService.get()
 
             val request = redditService.getJson(mAfter)
             val response = request.await()
 
             // TODO: Error handling
-            val body = response.body() ?: return@async
+            val body = response.body() ?: return@launch
 
             mAfter = body.data.after
 

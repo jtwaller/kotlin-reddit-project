@@ -6,7 +6,7 @@ import com.google.gson.Gson
 import com.jtwaller.tbdforreddit.models.*
 import com.jtwaller.tbdforreddit.network.RedditApiService
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class RedditCommentFragmentViewModel: ViewModel() {
 
@@ -25,13 +25,13 @@ class RedditCommentFragmentViewModel: ViewModel() {
     fun load(permalink: String) {
         isLoading.value = true
 
-        GlobalScope.async {
+        GlobalScope.launch {
             val redditService = RedditApiService.get()
 
             val request = redditService.fetchCommentsPermalink(permalink)
             val response = request.await()
 
-            val jsonElement = response.body() ?: return@async
+            val jsonElement = response.body() ?: return@launch
 
             val commentList = Gson().fromJson(jsonElement.asJsonArray.get(1), RedditCommentListingObject::class.java)
 
