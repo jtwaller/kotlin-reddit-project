@@ -44,7 +44,7 @@ class MainActivity : FragmentActivity() {
                     R.anim.exit_to_right,
                     R.anim.enter_from_right,
                     R.anim.exit_to_right)
-            replace(R.id.fragment, commentFragment)
+            replace(R.id.post_list_fragment, commentFragment)
             addToBackStack(null)
             commit()
         }

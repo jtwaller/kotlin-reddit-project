@@ -8,7 +8,7 @@
     tools:context="com.jtwaller.tbdforreddit.MainActivity">
 
     <fragment android:name="com.jtwaller.tbdforreddit.ui.fragments.PostListFragment"
-        android:id="@+id/fragment"
+        android:id="@+id/post_list_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

@@ -17,21 +17,19 @@ import com.jtwaller.tbdforreddit.printLongestUnit
 import com.jtwaller.tbdforreddit.ui.adapters.PostListAdapter.Companion.REDDIT_LINK_DATA
 import com.jtwaller.tbdforreddit.viewmodels.RedditCommentFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_detail.view.*
+import java.lang.RuntimeException
 
 class DetailFragment: Fragment() {
 
     companion object {
         const val TAG = "DetailFragment"
 
-        fun newInstance(redditLinkData: RedditLinkData): DetailFragment {
-            val args = Bundle()
-            args.putParcelable(REDDIT_LINK_DATA, redditLinkData)
-
-            val frag = DetailFragment()
-            frag.arguments = args
-
-            return frag
-        }
+        fun newInstance(redditLinkData: RedditLinkData): DetailFragment =
+                DetailFragment().apply {
+                    arguments = Bundle().apply {
+                        putParcelable(REDDIT_LINK_DATA, redditLinkData)
+                    }
+                }
     }
 
     private lateinit var mViewModel: RedditCommentFragmentViewModel
@@ -39,7 +37,9 @@ class DetailFragment: Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mParentLinkData = arguments!!.get(REDDIT_LINK_DATA) as RedditLinkData
+        arguments?.let {
+            mParentLinkData = it.get(REDDIT_LINK_DATA) as RedditLinkData
+        } ?: throw RuntimeException("Detail fragment should have link data argument")
 
         mViewModel = ViewModelProviders.of(this).get(RedditCommentFragmentViewModel::class.java)
         mViewModel.load(mParentLinkData.permalink)
