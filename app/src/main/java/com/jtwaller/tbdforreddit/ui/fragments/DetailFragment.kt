@@ -56,6 +56,14 @@ class DetailFragment: Fragment() {
             upvote_count.text = mParentLinkData.getShortFormatScore()
             comment_count.text = mParentLinkData.getShortFormatCommentCount()
             age_text.text = mParentLinkData.getAgePeriod().printLongestUnit(this.context)
+
+            self_text.apply {
+                if (mParentLinkData.selftext == "") {
+                    visibility = View.GONE
+                } else {
+                    text = mParentLinkData.selftext
+                }
+            }
         }
 
         val width = mParentLinkData.preview?.images?.get(0)?.source?.width ?: -1

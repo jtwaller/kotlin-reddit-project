@@ -29,6 +29,7 @@ class RedditLinkData(
         override val permalink: String,
         val subreddit: String,
         val title: String,
+        val selftext: String,
         val url: String,
         val preview: RedditLinkDataPreview?,
         val thumbnail: String,
@@ -42,6 +43,7 @@ class RedditLinkData(
             parcel.readInt(),
             parcel.readInt(),
             parcel.readLong(),
+            parcel.readString() ?: throw IllegalStateException("Invalid RedditLinkData"),
             parcel.readString() ?: throw IllegalStateException("Invalid RedditLinkData"),
             parcel.readString() ?: throw IllegalStateException("Invalid RedditLinkData"),
             parcel.readString() ?: throw IllegalStateException("Invalid RedditLinkData"),
@@ -73,6 +75,7 @@ class RedditLinkData(
         parcel.writeString(permalink)
         parcel.writeString(subreddit)
         parcel.writeString(title)
+        parcel.writeString(selftext)
         parcel.writeString(url)
         parcel.writeParcelable(preview, flags)
         parcel.writeString(thumbnail)

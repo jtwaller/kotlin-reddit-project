@@ -28,7 +28,6 @@
             android:paddingEnd="8dp"
             android:paddingTop="8dp"
             android:paddingBottom="4dp"
-            android:textColor="@color/grey"
             tools:text="You've had a landscaper and a housekeeper since you were born.  The sunshine always kept you warm.  So why see the world?" />
 
         <!-- Middle bar -->
@@ -86,6 +85,14 @@
                 tools:text="some_username" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/self_text"
+            style="@style/SelfText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp" />
 
         <!-- Bottom bar -->
         <LinearLayout
