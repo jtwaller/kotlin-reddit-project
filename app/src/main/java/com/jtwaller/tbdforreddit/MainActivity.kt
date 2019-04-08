@@ -3,7 +3,7 @@ package com.jtwaller.tbdforreddit
 import android.content.*
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.FragmentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.jtwaller.tbdforreddit.models.RedditLinkData
 import com.jtwaller.tbdforreddit.ui.adapters.PostListAdapter.Companion.REDDIT_LINK_DATA
@@ -11,7 +11,7 @@ import com.jtwaller.tbdforreddit.ui.fragments.DetailFragment
 import net.danlew.android.joda.JodaTimeAndroid
 import java.lang.ClassCastException
 
-class MainActivity : FragmentActivity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var mBroadcastReceiver: MainBroadcastReceiver
 
