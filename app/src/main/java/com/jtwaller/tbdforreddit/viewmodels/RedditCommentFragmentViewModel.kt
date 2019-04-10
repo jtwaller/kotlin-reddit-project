@@ -2,8 +2,6 @@ package com.jtwaller.tbdforreddit.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.gson.Gson
-import com.jtwaller.tbdforreddit.models.*
 import com.jtwaller.tbdforreddit.network.RedditApiService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -16,7 +14,7 @@ class RedditCommentFragmentViewModel: ViewModel() {
 
     val isLoading: MutableLiveData<Boolean> = MutableLiveData()
 
-    lateinit var commentListingData: ArrayList<RedditCommentData>
+//    lateinit var commentListingData: ArrayList<RedditCommentData>
 
     init {
         isLoading.value = true
@@ -33,7 +31,7 @@ class RedditCommentFragmentViewModel: ViewModel() {
 
             val jsonElement = response.body() ?: return@launch
 
-            val commentList = Gson().fromJson(jsonElement.asJsonArray.get(1), RedditCommentListingObject::class.java)
+//            val commentList = Gson().fromJson(jsonElement.asJsonArray.get(1), RedditListingObject::class.java)
 
             isLoading.postValue(false)
         }

@@ -3,7 +3,7 @@ package com.jtwaller.tbdforreddit.network
 import com.google.gson.JsonElement
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.jtwaller.tbdforreddit.BuildConfig
-import com.jtwaller.tbdforreddit.models.RedditLinkListingObject
+import com.jtwaller.tbdforreddit.models.RedditListing
 import kotlinx.coroutines.Deferred
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -17,7 +17,7 @@ import retrofit2.http.Query
 interface RedditApiService {
 
     @GET(".json")
-    fun getJson(@Query("after") after: String?): Deferred<Response<RedditLinkListingObject>>
+    fun getJson(@Query("after") after: String?): Deferred<Response<RedditListing>>
 
     @GET("{permalink}.json")
     fun fetchCommentsPermalink(@Path("permalink", encoded = true) permalink: String) : Deferred<Response<JsonElement>>

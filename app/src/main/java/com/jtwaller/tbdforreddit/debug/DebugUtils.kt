@@ -6,7 +6,7 @@ import android.content.Intent
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.gson.Gson
 import com.jtwaller.tbdforreddit.MainActivity
-import com.jtwaller.tbdforreddit.models.RedditLinkListingObject
+import com.jtwaller.tbdforreddit.models.RedditListing
 import com.jtwaller.tbdforreddit.network.RedditApiService
 import com.jtwaller.tbdforreddit.ui.adapters.PostListAdapter
 import kotlinx.coroutines.GlobalScope
@@ -25,7 +25,7 @@ class DebugUtils {
                 val response = request.await()
 
                 val jsonElement = response.body() ?: return@launch
-                val redditLinkListingObject = Gson().fromJson(jsonElement.asJsonArray.get(0), RedditLinkListingObject::class.java)
+                val redditLinkListingObject = Gson().fromJson(jsonElement.asJsonArray.get(0), RedditListing::class.java)
 
                 val mIntent = Intent().apply {
                     component = ComponentName(ctx, MainActivity::class.java)

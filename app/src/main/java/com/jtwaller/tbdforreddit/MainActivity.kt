@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.jtwaller.tbdforreddit.models.RedditLinkData
+import com.jtwaller.tbdforreddit.models.RedditObjectData
 import com.jtwaller.tbdforreddit.ui.adapters.PostListAdapter.Companion.REDDIT_LINK_DATA
 import com.jtwaller.tbdforreddit.ui.fragments.DetailFragment
 import net.danlew.android.joda.JodaTimeAndroid
@@ -32,11 +32,11 @@ class MainActivity : AppCompatActivity() {
                 .registerReceiver(mBroadcastReceiver, IntentFilter(BUILD_FRAGMENT_ACTION))
     }
 
-    fun createDetailFragment(redditLinkData: RedditLinkData) {
+    fun createDetailFragment(redditObjectData: RedditObjectData) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
 
-        val commentFragment = DetailFragment.newInstance(redditLinkData)
+        val commentFragment = DetailFragment.newInstance(redditObjectData)
 
         fragmentTransaction.apply {
             setCustomAnimations(
@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
     class MainBroadcastReceiver(private val parent: MainActivity) : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             try {
-                val mRedditLinkData = intent?.extras?.get(REDDIT_LINK_DATA) as RedditLinkData
+                val mRedditLinkData = intent?.extras?.get(REDDIT_LINK_DATA) as RedditObjectData
                 parent.createDetailFragment(mRedditLinkData)
             } catch (e: ClassCastException) {
                 AlertDialog.Builder(parent)

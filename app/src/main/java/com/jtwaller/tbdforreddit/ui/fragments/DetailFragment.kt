@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.jtwaller.tbdforreddit.GlideApp
 import com.jtwaller.tbdforreddit.R
-import com.jtwaller.tbdforreddit.models.RedditLinkData
+import com.jtwaller.tbdforreddit.models.RedditObjectData
 import com.jtwaller.tbdforreddit.printLongestUnit
 import com.jtwaller.tbdforreddit.ui.adapters.PostListAdapter.Companion.REDDIT_LINK_DATA
 import com.jtwaller.tbdforreddit.viewmodels.RedditCommentFragmentViewModel
@@ -24,21 +25,21 @@ class DetailFragment: Fragment() {
     companion object {
         const val TAG = "DetailFragment"
 
-        fun newInstance(redditLinkData: RedditLinkData): DetailFragment =
+        fun newInstance(redditObjectData: RedditObjectData): DetailFragment =
                 DetailFragment().apply {
                     arguments = Bundle().apply {
-                        putParcelable(REDDIT_LINK_DATA, redditLinkData)
+                        putParcelable(REDDIT_LINK_DATA, redditObjectData)
                     }
                 }
     }
 
     private lateinit var mViewModel: RedditCommentFragmentViewModel
-    private lateinit var mParentLinkData: RedditLinkData
+    private lateinit var mParentLinkData: RedditObjectData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            mParentLinkData = it.get(REDDIT_LINK_DATA) as RedditLinkData
+            mParentLinkData = it.get(REDDIT_LINK_DATA) as RedditObjectData
         } ?: throw RuntimeException("Detail fragment should have link data argument")
 
         mViewModel = ViewModelProviders.of(this).get(RedditCommentFragmentViewModel::class.java)
@@ -65,6 +66,9 @@ class DetailFragment: Fragment() {
                 }
             }
         }
+
+        Log.d(TAG, ": ${mParentLinkData.url}")
+        Log.d(TAG, ": ${mParentLinkData.preview?.images?.get(0)?.source?.width}")
 
         val width = mParentLinkData.preview?.images?.get(0)?.source?.width ?: -1
         val height = mParentLinkData.preview?.images?.get(0)?.source?.height ?: -1
