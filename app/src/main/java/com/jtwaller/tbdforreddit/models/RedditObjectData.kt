@@ -20,7 +20,9 @@ class RedditObjectData (
         val thumbnail: String,
         val num_comments: Int,
         val over_18: Boolean,
-        val pinned: Boolean
+        val pinned: Boolean,
+        val body: String?,
+        val depth: Int?
 ) : Parcelable {
 
     fun getShortFormatCommentCount(): String {
@@ -64,7 +66,9 @@ class RedditObjectData (
             parcel.readString()  ?: throw IllegalStateException("Invalid RedditLinkData"),
             parcel.readInt(),
             parcel.readByte() != 0.toByte(),
-            parcel.readByte() != 0.toByte())
+            parcel.readByte() != 0.toByte(),
+            parcel.readValue(String::class.java.classLoader) as String?,
+            parcel.readValue(Int::class.java.classLoader) as Int?)
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(author)
@@ -81,6 +85,8 @@ class RedditObjectData (
         parcel.writeInt(num_comments)
         parcel.writeByte(if (over_18) 1 else 0)
         parcel.writeByte(if (pinned) 1 else 0)
+        parcel.writeValue(body)
+        parcel.writeValue(depth)
     }
 
     override fun describeContents(): Int {

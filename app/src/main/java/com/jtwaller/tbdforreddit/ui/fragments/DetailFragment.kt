@@ -16,7 +16,7 @@ import com.jtwaller.tbdforreddit.R
 import com.jtwaller.tbdforreddit.models.RedditObjectData
 import com.jtwaller.tbdforreddit.printLongestUnit
 import com.jtwaller.tbdforreddit.ui.adapters.PostListAdapter.Companion.REDDIT_LINK_DATA
-import com.jtwaller.tbdforreddit.viewmodels.RedditCommentFragmentViewModel
+import com.jtwaller.tbdforreddit.viewmodels.CommentsViewModel
 import kotlinx.android.synthetic.main.fragment_detail.view.*
 import java.lang.RuntimeException
 
@@ -33,17 +33,17 @@ class DetailFragment: Fragment() {
                 }
     }
 
-    private lateinit var mViewModel: RedditCommentFragmentViewModel
+    private lateinit var mCommentsViewModel: CommentsViewModel
     private lateinit var mParentLinkData: RedditObjectData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             mParentLinkData = it.get(REDDIT_LINK_DATA) as RedditObjectData
-        } ?: throw RuntimeException("Detail fragment should have link data argument")
+        } ?: throw RuntimeException("Detail fragment cannot be created without parent object")
 
-        mViewModel = ViewModelProviders.of(this).get(RedditCommentFragmentViewModel::class.java)
-        mViewModel.load(mParentLinkData.permalink)
+        mCommentsViewModel = ViewModelProviders.of(this).get(CommentsViewModel::class.java)
+        mCommentsViewModel.load(mParentLinkData.permalink)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -81,8 +81,10 @@ class DetailFragment: Fragment() {
 
         }
 
-        mViewModel.isLoading.observe(this, Observer {
+        mCommentsViewModel.isLoading.observe(this, Observer {
             if (it == false) {
+
+                mView.tmp.text = mCommentsViewModel.s
                 // Load comments
             }
         })

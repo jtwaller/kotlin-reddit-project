@@ -13,11 +13,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jtwaller.tbdforreddit.GlideApp
 import com.jtwaller.tbdforreddit.MainActivity
 import com.jtwaller.tbdforreddit.R
-import com.jtwaller.tbdforreddit.models.RedditLinkObject
+import com.jtwaller.tbdforreddit.models.RedditObject
 import com.jtwaller.tbdforreddit.printLongestUnit
 import kotlinx.android.synthetic.main.thumbnail_view.view.*
 
-class PostListAdapter(private val context: Context, private val dataSet: ArrayList<RedditLinkObject>) : RecyclerView.Adapter<PostListAdapter.PostViewHolder>() {
+class PostListAdapter(private val context: Context, private val dataSet: ArrayList<RedditObject>) : RecyclerView.Adapter<PostListAdapter.PostViewHolder>() {
 
     companion object {
         const val TAG = "PostListAdapter"

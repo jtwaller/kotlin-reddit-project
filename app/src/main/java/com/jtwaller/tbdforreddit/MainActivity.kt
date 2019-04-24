@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.jtwaller.tbdforreddit.debug.DebugUtils
 import com.jtwaller.tbdforreddit.models.RedditObjectData
 import com.jtwaller.tbdforreddit.ui.adapters.PostListAdapter.Companion.REDDIT_LINK_DATA
 import com.jtwaller.tbdforreddit.ui.fragments.DetailFragment
@@ -30,6 +31,8 @@ class MainActivity : AppCompatActivity() {
         LocalBroadcastManager
                 .getInstance(this)
                 .registerReceiver(mBroadcastReceiver, IntentFilter(BUILD_FRAGMENT_ACTION))
+
+        DebugUtils.broadcastLinkData(this, "r/Frugal/comments/b8wwi4/frugal_tips_why_my_coworkers_make_fun_of_me/")
     }
 
     fun createDetailFragment(redditObjectData: RedditObjectData) {
