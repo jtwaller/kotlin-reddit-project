@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">TBD for Reddit</string>
 
-    <string name="points_abbrev">%d pts</string>
+    <string name="points_abbrev">%s pts</string>
+    <string name="thousands_abbrev">%.1fk</string>
 
     <!-- time abbreviations -->
     <string name="year_abbrev">%dy</string>

@@ -12,6 +12,7 @@ import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.jtwaller.tbdforreddit.GlideApp
 import com.jtwaller.tbdforreddit.R
+import com.jtwaller.tbdforreddit.abbreviateThousands
 import com.jtwaller.tbdforreddit.models.RedditComment
 import com.jtwaller.tbdforreddit.models.RedditObjectData
 import com.jtwaller.tbdforreddit.printLongestUnit
@@ -63,8 +64,8 @@ class DetailFragmentAdapter(val context: Context, val parentLink: RedditObjectDa
                     subreddit_text.text = parentLink.subreddit
                     domain_text.text = parentLink.getDomain()
                     author_text.text = parentLink.author
-                    upvote_count.text = parentLink.getShortFormatScore()
-                    comment_count.text = parentLink.getShortFormatCommentCount()
+                    upvote_count.text = parentLink.score.abbreviateThousands(this.context)
+                    comment_count.text = parentLink.num_comments.abbreviateThousands(this.context)
                     age_text.text = parentLink.getAgePeriod().printLongestUnit(this.context)
 
                     self_text.apply {
@@ -92,7 +93,7 @@ class DetailFragmentAdapter(val context: Context, val parentLink: RedditObjectDa
 
                 mView.apply {
                     comment_author.text = comment.author
-                    comment_upvotes.text = this.context.resources.getString(R.string.points_abbrev, comment.score)
+                    comment_upvotes.text = this.context.resources.getString(R.string.points_abbrev, comment.score.abbreviateThousands(this.context))
                     comment_age.text = comment.getAgePeriod().printLongestUnit(this.context)
                     comment_body.text = comment.body
                     setPaddingRelative(8 + comment.depth * 24, 8, 8, 8)

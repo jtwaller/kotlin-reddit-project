@@ -23,7 +23,6 @@ class PostListFragment : Fragment() {
     private lateinit var mViewModel: RedditLinkListViewModel
 
     private lateinit var fragmentContext: Context
-    private lateinit var fragmentView: View
 
     private var mCurrLinkListSize = 0
 
@@ -33,7 +32,6 @@ class PostListFragment : Fragment() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-
         fragmentContext = context ?: throw RuntimeException("No context to attach fragment")
     }
 
@@ -52,27 +50,26 @@ class PostListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val mViewManager = LinearLayoutManager(fragmentContext)
 
-        fragmentView = inflater.inflate(R.layout.fragment_post_list, container, false) ?:
+        val view = inflater.inflate(R.layout.fragment_post_list, container, false) ?:
                 throw RuntimeException("Unable to inflate view")
 
-        mRecyclerView = fragmentView.findViewById(R.id.recycler_view)
-
+        mRecyclerView = view.findViewById(R.id.recycler_view)
         mRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = mViewManager
             adapter = mViewAdapter
             addItemDecoration(DividerItemDecoration(fragmentContext, mViewManager.orientation))
+
+            addOnScrollListener(object: RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    if(mCurrLinkListSize - mViewManager.findLastVisibleItemPosition() < 5) {
+                        mViewModel.getLinks()
+                    }
+                }
+            })
         }
 
-        mRecyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if(mCurrLinkListSize - mViewManager.findLastVisibleItemPosition() < 5) {
-                    mViewModel.getLinks()
-                }
-            }
-        })
-
-        return fragmentView
+        return view
     }
 
 }

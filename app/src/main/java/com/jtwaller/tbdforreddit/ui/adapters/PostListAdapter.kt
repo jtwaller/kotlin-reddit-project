@@ -10,11 +10,8 @@ import android.widget.LinearLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.RecyclerView
-import com.jtwaller.tbdforreddit.GlideApp
-import com.jtwaller.tbdforreddit.MainActivity
-import com.jtwaller.tbdforreddit.R
+import com.jtwaller.tbdforreddit.*
 import com.jtwaller.tbdforreddit.models.RedditObject
-import com.jtwaller.tbdforreddit.printLongestUnit
 import kotlinx.android.synthetic.main.thumbnail_view.view.*
 
 class PostListAdapter(private val context: Context, private val dataSet: ArrayList<RedditObject>) : RecyclerView.Adapter<PostListAdapter.PostViewHolder>() {
@@ -59,8 +56,8 @@ class PostListAdapter(private val context: Context, private val dataSet: ArrayLi
             subreddit_text.text = mData.subreddit
             domain_text.text = mData.getDomain()
             author_text.text = mData.author
-            upvote_count.text = mData.getShortFormatScore()
-            comment_count.text = mData.getShortFormatCommentCount()
+            upvote_count.text = mData.score.abbreviateThousands(this.context)
+            comment_count.text = mData.num_comments.abbreviateThousands(this.context)
             age_text.text = mData.getAgePeriod().printLongestUnit(this.context)
 
             setOnClickListener {

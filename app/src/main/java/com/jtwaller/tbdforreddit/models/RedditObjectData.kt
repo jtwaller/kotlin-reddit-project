@@ -25,14 +25,6 @@ class RedditObjectData (
         val depth: Int?
 ) : Parcelable {
 
-    fun getShortFormatCommentCount(): String {
-        return if (num_comments < 1000) {
-            num_comments.toString()
-        } else {
-            String.format("%.1fk", num_comments.toFloat() / 1000)
-        }
-    }
-
     fun getDomain(): String {
         val host = URL(url).host
         return if (host.startsWith("www.")) host.substring(4) else host
@@ -42,14 +34,6 @@ class RedditObjectData (
         // reddit time is in s, divide system time by 1000
         val nowInSecs = System.currentTimeMillis() / 1000
         return Period.seconds((nowInSecs - created_utc).toInt())
-    }
-
-    fun getShortFormatScore(): String {
-        return if (score < 1000) {
-            score.toString()
-        } else {
-            String.format("%.1fk", score.toFloat() / 1000)
-        }
     }
 
     constructor(parcel: Parcel) : this(

@@ -30,24 +30,17 @@ class DetailFragment: Fragment() {
                 }
     }
 
-    private lateinit var mCommentsViewModel: CommentsViewModel
-    private lateinit var mParentLinkData: RedditObjectData
-
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mAdapter: DetailFragmentAdapter
-    private lateinit var mLayoutManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            mParentLinkData = it.get(REDDIT_LINK_DATA) as RedditObjectData
-        } ?: throw RuntimeException("Detail fragment cannot be created without parent object")
 
-        mCommentsViewModel = ViewModelProviders.of(this).get(CommentsViewModel::class.java)
-        mCommentsViewModel.load(mParentLinkData.permalink)
+        val parentObject = arguments?.get(REDDIT_LINK_DATA) as? RedditObjectData
+                ?: throw RuntimeException("Detail fragment cannot be created without parent object")
 
-        mAdapter = DetailFragmentAdapter(this.context!!, mParentLinkData, mCommentsViewModel.commentList)
-        mLayoutManager = LinearLayoutManager(this.context)
+        val mCommentsViewModel = ViewModelProviders.of(this).get(CommentsViewModel::class.java)
+        mAdapter = DetailFragmentAdapter(this.context!!, parentObject, mCommentsViewModel.commentList)
 
         mCommentsViewModel.isLoading.observe(this, Observer {
             if (it == false) {
@@ -55,12 +48,14 @@ class DetailFragment: Fragment() {
             }
         })
 
+        mCommentsViewModel.load(parentObject.permalink)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val mView = inflater.inflate(R.layout.fragment_detail, container, false)
-        mRecyclerView = mView.findViewById(R.id.detail_recycler_view)
+        val view = inflater.inflate(R.layout.fragment_detail, container, false)
+        val mLayoutManager = LinearLayoutManager(this.context)
 
+        mRecyclerView = view.findViewById(R.id.detail_recycler_view)
         mRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = mLayoutManager
@@ -68,7 +63,7 @@ class DetailFragment: Fragment() {
             addItemDecoration(DividerItemDecoration(context, mLayoutManager.orientation))
         }
 
-        return mView
+        return view
     }
 
 }
