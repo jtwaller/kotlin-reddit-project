@@ -21,10 +21,16 @@ class RedditObject(
 class RedditComment(
         val author: String,
         val score: Int,
-        val age: Period,
+        val created_utc: Int,
         val body: String,
         val depth: Int
-)
+) {
+    fun getAgePeriod(): Period {
+        // reddit time is in s, divide system time by 1000
+        val nowInSecs = System.currentTimeMillis() / 1000
+        return Period.seconds((nowInSecs - created_utc).toInt())
+    }
+}
 
 
 class JsonConstants {

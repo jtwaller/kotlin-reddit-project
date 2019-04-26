@@ -1,23 +1,20 @@
 package com.jtwaller.tbdforreddit.ui.fragments
 
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.jtwaller.tbdforreddit.GlideApp
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.jtwaller.tbdforreddit.R
 import com.jtwaller.tbdforreddit.models.RedditObjectData
-import com.jtwaller.tbdforreddit.printLongestUnit
+import com.jtwaller.tbdforreddit.ui.adapters.DetailFragmentAdapter
 import com.jtwaller.tbdforreddit.ui.adapters.PostListAdapter.Companion.REDDIT_LINK_DATA
 import com.jtwaller.tbdforreddit.viewmodels.CommentsViewModel
-import kotlinx.android.synthetic.main.fragment_detail.view.*
 import java.lang.RuntimeException
 
 class DetailFragment: Fragment() {
@@ -36,6 +33,10 @@ class DetailFragment: Fragment() {
     private lateinit var mCommentsViewModel: CommentsViewModel
     private lateinit var mParentLinkData: RedditObjectData
 
+    private lateinit var mRecyclerView: RecyclerView
+    private lateinit var mAdapter: DetailFragmentAdapter
+    private lateinit var mLayoutManager: LinearLayoutManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -44,72 +45,30 @@ class DetailFragment: Fragment() {
 
         mCommentsViewModel = ViewModelProviders.of(this).get(CommentsViewModel::class.java)
         mCommentsViewModel.load(mParentLinkData.permalink)
+
+        mAdapter = DetailFragmentAdapter(this.context!!, mParentLinkData, mCommentsViewModel.commentList)
+        mLayoutManager = LinearLayoutManager(this.context)
+
+        mCommentsViewModel.isLoading.observe(this, Observer {
+            if (it == false) {
+                mAdapter.notifyDataSetChanged()
+            }
+        })
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val mView = inflater.inflate(R.layout.fragment_detail, container, false)
+        mRecyclerView = mView.findViewById(R.id.detail_recycler_view)
 
-        mView.apply {
-            title_text.text = mParentLinkData.title
-            subreddit_text.text = mParentLinkData.subreddit
-            domain_text.text = mParentLinkData.getDomain()
-            author_text.text = mParentLinkData.author
-            upvote_count.text = mParentLinkData.getShortFormatScore()
-            comment_count.text = mParentLinkData.getShortFormatCommentCount()
-            age_text.text = mParentLinkData.getAgePeriod().printLongestUnit(this.context)
-
-            self_text.apply {
-                if (mParentLinkData.selftext == "") {
-                    visibility = View.GONE
-                } else {
-                    text = mParentLinkData.selftext
-                }
-            }
+        mRecyclerView.apply {
+            setHasFixedSize(true)
+            layoutManager = mLayoutManager
+            adapter = mAdapter
+            addItemDecoration(DividerItemDecoration(context, mLayoutManager.orientation))
         }
-
-        Log.d(TAG, ": ${mParentLinkData.url}")
-        Log.d(TAG, ": ${mParentLinkData.preview?.images?.get(0)?.source?.width}")
-
-        val width = mParentLinkData.preview?.images?.get(0)?.source?.width ?: -1
-        val height = mParentLinkData.preview?.images?.get(0)?.source?.height ?: -1
-
-        if (width > 0 && height > 0) {
-            GlideApp.with(this)
-                    .load(mParentLinkData.url)
-                    .placeholder(createPlaceholder(width, height))
-                    .into(mView.link_image)
-
-        }
-
-        mCommentsViewModel.isLoading.observe(this, Observer {
-            if (it == false) {
-
-                mView.tmp.text = mCommentsViewModel.s
-                // Load comments
-            }
-        })
 
         return mView
-    }
-
-    private fun createPlaceholder(srcWidth: Int, srcHeight: Int): BitmapDrawable {
-        val metrics = DisplayMetrics()
-        this.activity!!.windowManager.defaultDisplay.getMetrics(metrics)
-
-        val deviceWidth = metrics.widthPixels
-
-        val resizeRatio: Float = deviceWidth.toFloat() / srcWidth
-        val placeholderWidth = resizeRatio * srcWidth
-        val placeholderHeight = resizeRatio * srcHeight
-
-        val bitmap = Bitmap.createBitmap(
-                placeholderWidth.toInt(),
-                placeholderHeight.toInt(),
-                Bitmap.Config.ARGB_8888)
-
-        bitmap.eraseColor(android.graphics.Color.GRAY)
-
-        return BitmapDrawable(context?.resources, bitmap)
     }
 
 }

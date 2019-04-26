@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/comment_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="4dp">
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="2dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_person" />
+
+        <TextView
+            android:id="@+id/comment_author"
+            style="@style/CommentAuthorText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_marginEnd="4dp"
+            tools:text="some_username" />
+
+        <TextView
+            android:id="@+id/comment_upvotes"
+            style="@style/MiddleBarText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            tools:text="16.2k pts" />
+
+        <TextView
+            android:id="@+id/comment_age"
+            style="@style/MiddleBarText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="8 hours ago" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/comment_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="4dp"
+        android:paddingBottom="8dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:textColor="@color/grey"
+        tools:text="You've had a landscaper and a housekeeper since you were born.  The sunshine always kept you warm.  So why see the world?" />
+
+
+</LinearLayout>
