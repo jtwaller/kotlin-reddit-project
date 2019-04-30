@@ -4,6 +4,11 @@
     <string name="points_abbrev">%s pts</string>
     <string name="thousands_abbrev">%.1fk</string>
 
+    <string name="navigation_header_desc">Navigation header image</string>
+    <string name="sign_in">Sign in</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+
     <!-- time abbreviations -->
     <string name="year_abbrev">%dy</string>
     <string name="month_abbrev">%dm</string>
