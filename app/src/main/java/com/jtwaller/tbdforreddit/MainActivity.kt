@@ -2,15 +2,13 @@ package com.jtwaller.tbdforreddit
 
 import android.content.*
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.jtwaller.tbdforreddit.debug.DebugUtils
 import com.jtwaller.tbdforreddit.models.RedditObjectData
-import com.jtwaller.tbdforreddit.ui.adapters.PostListAdapter.Companion.REDDIT_LINK_DATA
+import com.jtwaller.tbdforreddit.services.MainBroadcastReceiver
 import com.jtwaller.tbdforreddit.ui.fragments.DetailFragment
 import net.danlew.android.joda.JodaTimeAndroid
-import java.lang.ClassCastException
 
 class MainActivity : AppCompatActivity() {
 
@@ -48,22 +46,6 @@ class MainActivity : AppCompatActivity() {
                             R.anim.exit_to_right)
                     commit()
                 }
-    }
-
-    class MainBroadcastReceiver(private val parent: MainActivity) : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            try {
-                val parentObjectData = intent?.extras?.get(REDDIT_LINK_DATA) as? RedditObjectData
-                        ?: throw RuntimeException("No parent object available to create Detail Fragment")
-                parent.createDetailFragment(parentObjectData)
-            } catch (e: ClassCastException) {
-                AlertDialog.Builder(parent)
-                        .setMessage(R.string.invalid_linkdata_broadcast)
-                        .setPositiveButton(android.R.string.ok) { dialog, _ -> dialog.dismiss() }
-                        .create()
-                        .show()
-            }
-        }
     }
 
 }
