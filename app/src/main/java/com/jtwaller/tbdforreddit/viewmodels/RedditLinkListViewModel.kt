@@ -26,7 +26,7 @@ class RedditLinkListViewModel : ViewModel() {
         mIsLoading = true
 
         GlobalScope.launch (Dispatchers.IO) {
-            val redditService = RedditApiService.get()
+            val redditService = RedditApiService.instance
 
             val request = redditService.getJson(mAfter)
             val response = request.await()

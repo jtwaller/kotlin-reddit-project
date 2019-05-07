@@ -35,7 +35,7 @@ class CommentsViewModel: ViewModel() {
         isLoading.value = true
 
         GlobalScope.launch {
-            val redditService = RedditApiService.get()
+            val redditService = RedditApiService.instance
 
             val request = redditService.fetchCommentsPermalink(permalink)
             val response = request.await()

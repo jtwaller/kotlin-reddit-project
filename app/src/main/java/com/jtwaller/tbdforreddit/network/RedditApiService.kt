@@ -23,28 +23,23 @@ interface RedditApiService {
     fun fetchCommentsPermalink(@Path("permalink", encoded = true) permalink: String) : Deferred<Response<JsonElement>>
 
     companion object {
-        private var instance: RedditApiService? = null
+        val instance: RedditApiService by lazy {
+            val clientBuilder = OkHttpClient.Builder()
 
-        fun get(): RedditApiService {
-            if (instance == null) {
-                val clientBuilder = OkHttpClient.Builder()
-
-                if (BuildConfig.DEBUG) {
-                    clientBuilder.addInterceptor(
-                            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC)
-                    )
-                }
-
-                val retrofit = Retrofit.Builder()
-                        .client(clientBuilder.build())
-                        .baseUrl("https://www.reddit.com/")
-                        .addCallAdapterFactory(CoroutineCallAdapterFactory())
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build()
-
-                instance = retrofit.create(RedditApiService::class.java)
+            if (BuildConfig.DEBUG) {
+                clientBuilder.addInterceptor(
+                        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC)
+                )
             }
-            return instance!!
+
+            val retrofit = Retrofit.Builder()
+                    .client(clientBuilder.build())
+                    .baseUrl("https://www.reddit.com/")
+                    .addCallAdapterFactory(CoroutineCallAdapterFactory())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
+
+            retrofit.create(RedditApiService::class.java)
         }
     }
 

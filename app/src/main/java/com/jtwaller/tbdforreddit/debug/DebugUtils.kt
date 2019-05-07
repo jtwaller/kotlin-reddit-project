@@ -19,7 +19,7 @@ class DebugUtils {
 
         fun broadcastLinkData(ctx: Context, permalink: String) {
             GlobalScope.launch {
-                val redditService = RedditApiService.get()
+                val redditService = RedditApiService.instance
 
                 val request = redditService.fetchCommentsPermalink(permalink)
                 val response = request.await()
