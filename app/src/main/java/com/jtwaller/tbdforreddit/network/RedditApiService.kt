@@ -23,14 +23,24 @@ interface RedditApiService {
     fun fetchCommentsPermalink(@Path("permalink", encoded = true) permalink: String) : Deferred<Response<JsonElement>>
 
     companion object {
+        const val userAgent = "android:com.jtwaller.tbdforreddit:0.1.0 (by /u/InternetProfessional)"
+
         val instance: RedditApiService by lazy {
             val clientBuilder = OkHttpClient.Builder()
 
             if (BuildConfig.DEBUG) {
-                clientBuilder.addInterceptor(
+                clientBuilder.addNetworkInterceptor(
                         HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC)
                 )
             }
+
+            clientBuilder.addInterceptor { chain ->
+                chain.proceed(chain.request()
+                        .newBuilder()
+                        .addHeader("User-Agent", userAgent)
+                        .build()
+                )
+            }.build()
 
             val retrofit = Retrofit.Builder()
                     .client(clientBuilder.build())
