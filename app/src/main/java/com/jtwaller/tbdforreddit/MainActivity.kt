@@ -122,6 +122,7 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
+        // If not building, please create res/values/secrets.xml with your own client id!
         val clientId = getString(R.string.client_id)
         val responseType = "token"
         val state = "UNIQUE_STATE"
