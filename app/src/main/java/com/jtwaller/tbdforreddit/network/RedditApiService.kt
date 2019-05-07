@@ -17,7 +17,7 @@ import retrofit2.http.Query
 interface RedditApiService {
 
     @GET(".json")
-    fun getJson(@Query("after") after: String?): Deferred<Response<RedditListing>>
+    fun getJson(@Query("after") after: String?) : Deferred<Response<RedditListing>>
 
     @GET("{permalink}.json")
     fun fetchCommentsPermalink(@Path("permalink", encoded = true) permalink: String) : Deferred<Response<JsonElement>>
