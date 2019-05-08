@@ -1,14 +1,15 @@
 package com.jtwaller.tbdforreddit
 
 import android.content.*
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.navigation.NavigationView
-import com.jtwaller.tbdforreddit.debug.DebugUtils
 import com.jtwaller.tbdforreddit.models.OAuthToken
 import com.jtwaller.tbdforreddit.models.RedditObjectData
 import com.jtwaller.tbdforreddit.models.RedditUser
@@ -55,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         navigationView = findViewById(R.id.main_navigation_view)
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.sign_in -> redditUser.login(this)
+                R.id.sign_in -> signIn()
                 else -> throw RuntimeException("Invalid navigation menu item id")
             }
             true
@@ -87,6 +88,38 @@ class MainActivity : AppCompatActivity() {
                             R.anim.exit_to_right)
                     commit()
                 }
+    }
+
+    fun signIn() {
+        if (redditUser.isLoggedIn()) {
+            Log.d(TAG, ": Valid auth token exists")
+
+            // TODO - show username in drawer
+            return
+        }
+
+        // If not building, please create res/values/secrets.xml with your own client id!
+        val clientId = getString(R.string.client_id)
+        val responseType = "token"
+        val state = "UNIQUE_STATE"
+        val redirectUri = "app://open.tbdforreddit"
+        val scope = "submit,identity"
+        val duration = "temporary"
+
+        val authUrl = "https://m.reddit.com/api/v1/authorize.compact?" +
+                "client_id=$clientId" +
+                "&response_type=$responseType" +
+                "&state=$state" +
+                "&duration=$duration" +
+                "&redirect_uri=$redirectUri" +
+                "&scope=$scope"
+
+        Log.d(TAG, ": $authUrl")
+
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(authUrl)
+
+        startActivity(intent)
     }
 
 }

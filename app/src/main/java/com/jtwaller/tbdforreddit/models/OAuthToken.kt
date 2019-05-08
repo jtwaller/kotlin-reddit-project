@@ -55,6 +55,6 @@ class OAuthToken(
     }
 
     fun isExpired(): Boolean {
-        return (expireTimeUtc > System.currentTimeMillis())
+        return (expireTimeUtc < System.currentTimeMillis())
     }
 }
