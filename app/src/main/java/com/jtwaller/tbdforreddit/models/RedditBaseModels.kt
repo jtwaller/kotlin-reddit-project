@@ -32,6 +32,11 @@ class RedditComment(
     }
 }
 
+class RedditMe(
+        val name: String,
+        val icon_img: String,
+        val created_utc: String
+)
 
 class JsonConstants {
     companion object {

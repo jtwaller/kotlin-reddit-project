@@ -1,9 +1,8 @@
 package com.jtwaller.tbdforreddit.network
 
-import com.google.gson.JsonElement
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.jtwaller.tbdforreddit.BuildConfig
-import com.jtwaller.tbdforreddit.models.RedditListing
+import com.jtwaller.tbdforreddit.models.RedditMe
 import kotlinx.coroutines.Deferred
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -11,38 +10,32 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.Header
 
-interface RedditApiService {
+interface RedditOAuthApiService {
 
-    @GET(".json")
-    fun getJson(@Query("after") after: String?) : Deferred<Response<RedditListing>>
-
-    @GET("{permalink}.json")
-    fun fetchCommentsPermalink(@Path("permalink", encoded = true) permalink: String) : Deferred<Response<JsonElement>>
+    @GET("api/v1/me")
+    fun getIdentity(@Header("Authorization") token: String) : Deferred<Response<RedditMe>>
 
     companion object {
-        const val userAgent = "android:com.jtwaller.tbdforreddit:0.1.0 (by /u/InternetProfessional)"
-
-        val instance: RedditApiService by lazy {
+        val instance: RedditOAuthApiService by lazy {
             val clientBuilder = OkHttpClient.Builder()
             clientBuilder.apply {
                 addInterceptor(UserAgentInterceptor())
                 if (BuildConfig.DEBUG) {
                     addNetworkInterceptor(
-                            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
+                            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 }
             }
 
             val retrofit = Retrofit.Builder()
                     .client(clientBuilder.build())
-                    .baseUrl("https://www.reddit.com/")
+                    .baseUrl("https://oauth.reddit.com/")
                     .addCallAdapterFactory(CoroutineCallAdapterFactory())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
 
-            retrofit.create(RedditApiService::class.java)
+            retrofit.create(RedditOAuthApiService::class.java)
         }
     }
 

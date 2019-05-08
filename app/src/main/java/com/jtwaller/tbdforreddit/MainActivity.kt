@@ -3,6 +3,8 @@ package com.jtwaller.tbdforreddit
 import android.content.*
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -13,8 +15,12 @@ import com.google.android.material.navigation.NavigationView
 import com.jtwaller.tbdforreddit.models.OAuthToken
 import com.jtwaller.tbdforreddit.models.RedditObjectData
 import com.jtwaller.tbdforreddit.models.RedditUser
+import com.jtwaller.tbdforreddit.network.RedditOAuthApiService
 import com.jtwaller.tbdforreddit.services.MainBroadcastReceiver
 import com.jtwaller.tbdforreddit.ui.fragments.DetailFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import net.danlew.android.joda.JodaTimeAndroid
 import java.lang.RuntimeException
 
@@ -66,6 +72,14 @@ class MainActivity : AppCompatActivity() {
             // TODO - graceful error handling
             val authFragment = uri.fragment ?: throw RuntimeException("No fragment data in Auth API response")
             redditUser.setOAuthToken(OAuthToken.fromApiFragment(authFragment))
+
+            GlobalScope.launch (Dispatchers.IO) {
+                val request = RedditOAuthApiService.instance
+                        .getIdentity("bearer ${redditUser.getTokenString() ?: "invalid token"}")
+                val response = request.await()
+
+                updateMenuItem(response.body()?.name ?: "Null response.body().name")
+            }
         }
 //        DebugUtils.broadcastLinkData(this, "r/Frugal/comments/b8wwi4/frugal_tips_why_my_coworkers_make_fun_of_me/")
     }
@@ -93,8 +107,6 @@ class MainActivity : AppCompatActivity() {
     fun signIn() {
         if (redditUser.isLoggedIn()) {
             Log.d(TAG, ": Valid auth token exists")
-
-            // TODO - show username in drawer
             return
         }
 
@@ -120,6 +132,12 @@ class MainActivity : AppCompatActivity() {
         intent.data = Uri.parse(authUrl)
 
         startActivity(intent)
+    }
+
+    fun updateMenuItem(update: String) {
+        Handler(Looper.getMainLooper()).post {
+            navigationView.menu.findItem(R.id.sign_in).setTitle(update)
+        }
     }
 
 }

@@ -18,4 +18,8 @@ class RedditUser {
         oAuthToken = token
     }
 
+    fun getTokenString(): String? {
+        return oAuthToken?.getAccessToken()
+    }
+
 }
