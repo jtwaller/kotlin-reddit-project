@@ -7,12 +7,14 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.MenuItem
+import android.widget.ImageView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.navigation.NavigationView
 import com.jtwaller.tbdforreddit.models.OAuthToken
+import com.jtwaller.tbdforreddit.models.RedditMe
 import com.jtwaller.tbdforreddit.models.RedditObjectData
 import com.jtwaller.tbdforreddit.models.RedditUser
 import com.jtwaller.tbdforreddit.network.RedditOAuthApiService
@@ -78,7 +80,7 @@ class MainActivity : AppCompatActivity() {
                         .getIdentity("bearer ${redditUser.getTokenString() ?: "invalid token"}")
                 val response = request.await()
 
-                updateMenuItem(response.body()?.name ?: "Null response.body().name")
+                updateNavigationMenu(response.body())
             }
         }
 //        DebugUtils.broadcastLinkData(this, "r/Frugal/comments/b8wwi4/frugal_tips_why_my_coworkers_make_fun_of_me/")
@@ -134,9 +136,20 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun updateMenuItem(update: String) {
+    fun updateNavigationMenu(identity: RedditMe?) {
         Handler(Looper.getMainLooper()).post {
-            navigationView.menu.findItem(R.id.sign_in).setTitle(update)
+            val identityItem = navigationView.menu.findItem(R.id.sign_in)
+
+            if (identity == null) {
+                identityItem.setTitle("Null RedditMe")
+            } else {
+                val headerImage = findViewById<ImageView>(R.id.navigation_header_image)
+                GlideApp.with(this)
+                        .load(identity.icon_img)
+                        .into(headerImage)
+
+                identityItem.setTitle(identity.name)
+            }
         }
     }
 
