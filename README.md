@@ -1,5 +1,7 @@
 # Kotlin Reddit Client Demo
 
+![](frontpage.png) ![](comments.png) ![](comments_tree.png)
+
 A simple Android Reddit client built for learning purposes.
 
 Uses modern Android tools (e.g., Kotlin Coroutines, Android Jetpack components, etc).
